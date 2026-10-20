@@ -52,6 +52,8 @@ jobs:
         run: node tests/fungsi-eksponensial.test.cjs
       - name: Periksa logaritma
         run: node tests/fungsi-logaritma.test.cjs
+      - name: Periksa persamaan eksponensial dan logaritma
+        run: node tests/persamaan-eksponen-log.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
