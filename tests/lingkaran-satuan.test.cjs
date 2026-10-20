@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const c=require('../dist/lingkaran-satuan-core.js');
+assert.equal(c.coordinates(180).cos,-1);assert.equal(c.coordinates(-90).sin,-1);assert.equal(c.coordinates(360).sin,0);assert.equal(c.coordinates(60).cosTex,String.raw`\frac12`);assert.equal(c.coordinates(150).sinTex,String.raw`\frac12`);assert.equal(c.coordinates(15).sinTex,null);
+for(let d=-360;d<=360;d+=15){const p=c.coordinates(d),q=c.coordinates(d+360),negative=c.coordinates(-d);assert.ok(Math.abs(p.cos*p.cos+p.sin*p.sin-1)<1e-12);assert.ok(Math.abs(p.cos-q.cos)<1e-12&&Math.abs(p.sin-q.sin)<1e-12);assert.ok(Math.abs(p.cos-negative.cos)<1e-12&&Math.abs(p.sin+negative.sin)<1e-12);const xy=c.point(p.cos,p.sin);assert.ok(Math.abs(Math.hypot(xy.x-180,xy.y-180)-120)<1e-10);if(d!==0)assert.ok(c.arc(d).length>1);}
+console.log('OK: axis values, exact special angles, identity, signs, periodicity and reflected negative angles.');
