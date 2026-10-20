@@ -36,6 +36,8 @@ jobs:
         run: node tests/fungsi.test.cjs
       - name: Periksa domain dan range
         run: node tests/domain-range.test.cjs
+      - name: Periksa operasi dan komposisi fungsi
+        run: node tests/komposisi-fungsi.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

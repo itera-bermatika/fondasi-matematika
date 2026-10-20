@@ -1,0 +1,5 @@
+const assert=require('node:assert/strict');const c=require('../dist/komposisi-fungsi-core.js');
+assert.equal(c.operation('add',3),16);assert.equal(c.operation('multiply',3),63);assert.equal(c.operation('subtract',-2),-7);assert.equal(c.operation('divide',0),null);assert.equal(c.operation('divide',-1),-1);
+assert.deepEqual(c.compose('fg',2),{middle:4,result:9,other:25});assert.deepEqual(c.compose('gf',2),{middle:5,result:25,other:9});assert.equal(c.compose('fg',0).result,c.compose('gf',0).result);
+for(let x=-3;x<=3;x++){assert.equal(c.compose('fg',x).result,2*x*x+1);assert.equal(c.compose('gf',x).result,4*x*x+4*x+1);assert.equal(c.operation('add',x),x*x+2*x+1);if(x!==0)assert.equal(c.operation('divide',x),(2*x+1)/(x*x));}
+assert.equal(c.rootCompositionAllowed('uv',.5),true);assert.equal(c.rootCompositionAllowed('uv',.49),false);assert.equal(c.rootCompositionAllowed('vu',0),true);assert.equal(c.rootCompositionAllowed('uv',0),false);console.log('OK: operations, forbidden zero denominator, composition order and boundary of composed domain.');
