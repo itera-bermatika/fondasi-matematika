@@ -1,0 +1,6 @@
+const assert=require('node:assert/strict'),core=require('../dist/penerapan-trigonometri-core.js');const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} != ${b}`),rad=x=>x*Math.PI/180;
+const sample=core.sas(5,7,60);close(sample.a**2,39);close(core.sas(5,7,90).a**2,74);close(core.sas(6,4,30).area,6);assert.equal(core.sas(0,7,60),null);assert.equal(core.sas(5,7,180),null);
+for(let b=1;b<=10;b++)for(let c=1;c<=10;c++)for(let A=15;A<=165;A+=15){const t=core.sas(b,c,A),p=core.layout(t);assert.ok(t.a>Math.abs(b-c)&&t.a<b+c);assert.ok(t.B>0&&t.C>0);close(t.A+t.B+t.C,180);close(t.a**2,b*b+c*c-2*b*c*Math.cos(rad(A)));close(t.a/Math.sin(rad(t.A)),b/Math.sin(rad(t.B)));close(t.area,0.5*t.a*b*Math.sin(rad(t.C)));for(const v of Object.values(p))assert.ok(v.x>=65-1e-9&&v.x<=455+1e-9&&v.y>=60-1e-9&&v.y<=280+1e-9);}
+assert.equal(core.ssa(30,7,10).length,2);assert.equal(core.ssa(30,4,10).length,0);assert.equal(core.ssa(30,5,10).length,1);assert.equal(core.ssa(120,10,5).length,1);for(const q of core.ssa(30,7,10))close(7/Math.sin(rad(30)),10/Math.sin(rad(q.B)));
+let prev=0;for(let A=15;A<=165;A+=15){const t=core.sas(5,7,A);assert.ok(t.a>prev);prev=t.a;assert.ok(t.area<=core.sas(5,7,90).area+1e-9);}
+console.log('OK: cosine/sine laws, angle sum, area, triangle inequality, ambiguous cases and diagram bounds.');
