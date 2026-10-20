@@ -70,6 +70,8 @@ jobs:
         run: node tests/trigonometri-invers.test.cjs
       - name: Periksa penerapan trigonometri
         run: node tests/penerapan-trigonometri.test.cjs
+      - name: Periksa laju perubahan rata-rata
+        run: node tests/laju-perubahan.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
