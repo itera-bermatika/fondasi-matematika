@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const c=require('../dist/fungsi-kuadrat-core.js');
+assert.deepEqual(c.analyze(1,-2,-3),{delta:16,h:1,k:-4,roots:[-1,3]});assert.deepEqual(c.analyze(1,0,0).roots,[0]);assert.deepEqual(c.analyze(1,0,1).roots,[]);assert.throws(()=>c.analyze(0,1,2));
+for(const a of [-2,-1,1,2])for(let b=-3;b<=3;b++)for(let d=-2;d<=2;d++){const r=c.analyze(a,b,d);assert.equal(r.roots.length,r.delta>0?2:r.delta===0?1:0);assert.equal(c.value(a,b,d,r.h),r.k);assert.equal(c.value(a,b,d,r.h-1),c.value(a,b,d,r.h+1));for(const x of r.roots){assert.ok(Math.abs(c.value(a,b,d,x))<1e-10);assert.ok(x>=-5&&x<=5);}const p=c.point(r.h,r.k);assert.ok(p.x>=30&&p.x<=330&&p.y>=30&&p.y<=330);for(const x of [-2,0,2])assert.ok(Math.abs(c.value(a,b,d,x)-(a*(x-r.h)**2+r.k))<1e-10);}
+console.log('OK: all lab coefficients, vertex symmetry, real root counts, root substitution and equivalent vertex form.');
