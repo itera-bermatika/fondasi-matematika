@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const c=require('../dist/fungsi-rasional-core.js');
+for(const kind of ['hole','pole','partial']){assert.equal(c.value(kind,1),null);for(let i=0;i<5;i++)for(const side of [-1,1]){const s=c.sample(kind,i,side),x=s.x.n/s.x.d,y=s.y.n/s.y.d;assert.notEqual(x,1);assert.ok(Math.abs(c.value(kind,x)-y)<1e-9);if(kind==='hole')assert.ok(Math.abs(y-2)<=1);else assert.ok(side<0?y<0:y>1);}}
+for(const x of [-3,-1,0,2,5]){assert.ok(Math.abs(c.value('hole',x)-(x*x-1)/(x-1))<1e-12);assert.ok(Math.abs(c.value('partial',x)-(x*x-1)/(x-1)**2)<1e-12);assert.equal(c.value('pole',x),c.value('partial',x));}
+assert.equal(c.value('hole',-1),0);assert.equal(c.sample('pole',4,-1).y.n,-199);assert.equal(c.sample('pole',4,1).y.n,201);assert.ok(Math.abs(c.value('pole',1e6)-1)<1e-5);console.log('OK: excluded input, exact two-sided samples, hole versus remaining pole, valid roots and horizontal behavior.');

@@ -46,6 +46,8 @@ jobs:
         run: node tests/fungsi-kuadrat.test.cjs
       - name: Periksa fungsi polinomial
         run: node tests/fungsi-polinomial.test.cjs
+      - name: Periksa fungsi rasional
+        run: node tests/fungsi-rasional.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
