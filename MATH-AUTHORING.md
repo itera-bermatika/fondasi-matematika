@@ -44,3 +44,7 @@ Do not remove those selects unless also updating the activity implementation.
 STIX Two SVG glyph data is served locally from `dist/vendor/mathjax-stix2-font`.
 Shared equation assets use a version query in every lesson to refresh cached
 rendering settings, including in Edge, when the font changes.
+
+The vendor base URL is resolved from `document.currentScript.src` in
+`mathjax-config.js`, not from the domain root. Preserve this when changing the
+configuration: GitHub Pages project sites serve under a repository subdirectory.

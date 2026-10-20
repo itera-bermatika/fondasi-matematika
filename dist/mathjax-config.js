@@ -1,10 +1,12 @@
 /* MathJax 4.1.3 and STIX Two are served from this site. */
+// Resolve beside this script so project sites work below /repository-name/.
+const mathAssets = new URL('vendor/', document.currentScript.src).href;
 window.MathJax = {
   loader: {
     load:['a11y/assistive-mml'],
-    paths: {mathjax:'/vendor/mathjax',fonts:'/vendor','mathjax-stix2':'/vendor/mathjax-stix2-font'}
+    paths: {mathjax:mathAssets+'mathjax',fonts:mathAssets,'mathjax-stix2':mathAssets+'mathjax-stix2-font'}
   },
-  output: {font:'mathjax-stix2',fontPath:'/vendor/mathjax-stix2-font'},
+  output: {font:'mathjax-stix2',fontPath:mathAssets+'mathjax-stix2-font'},
   tex: {inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]'],['$$','$$']],processEscapes:true},
   svg: {fontCache:'local'},
   options: {

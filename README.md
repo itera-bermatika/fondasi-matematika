@@ -1,0 +1,48 @@
+# Fondasi Matematika
+
+Bacaan interaktif berbahasa Indonesia untuk membantu mahasiswa membangun
+kembali fondasi matematika. Materi awal mencakup sebelas bacaan prekalkulus,
+dengan eksplorasi, latihan, pembahasan, dan MathJax berfont STIX Two.
+
+## Menjalankan di komputer
+
+Dari folder proyek, jalankan:
+
+```sh
+python -m http.server 8000 --directory dist
+```
+
+Buka `http://localhost:8000`. Hindari membuka berkas HTML secara langsung
+melalui alamat `file://`, karena pemuatan komponen matematika dapat dibatasi
+oleh browser. Tidak diperlukan pemasangan paket untuk website ini.
+
+## Menerbitkan dengan GitHub Pages
+
+1. Simpan proyek dalam repositori GitHub dengan cabang `main`.
+2. Untuk GitHub Free, gunakan repositori publik. Sumber dan isi bacaan dapat
+   dilihat publik; jangan menyimpan data pribadi mahasiswa atau kredensial.
+3. Pada **Settings → Pages → Build and deployment → Source**, pilih
+   **GitHub Actions**.
+4. Jalankan workflow **Terbitkan bacaan ke GitHub Pages**, atau dorong perubahan
+   ke `main`. Workflow memeriksa berkas lalu menerbitkan isi folder `dist`.
+5. Tautan hasil publikasi tersedia pada **Settings → Pages** dan hasil workflow.
+
+Alamat proyek biasanya berbentuk `https://nama-akun.github.io/nama-repositori/`.
+Komponen MathJax menggunakan alamat relatif terhadap proyek, sehingga dapat
+dimuat baik pada domain utama maupun di bawah nama repositori.
+
+## Menulis dan memeriksa materi
+
+- Edit bacaan dan aktivitas pada `dist/`.
+- Pedoman penulisan rumus tersedia dalam [MATH-AUTHORING.md](MATH-AUTHORING.md).
+- Jalankan `python scripts/check-site.py` sebelum menerbitkan.
+- Periksa tampilan pada smartphone dan coba aktivitas yang diubah.
+
+Catatan dan kemajuan belajar saat ini disimpan pada browser masing-masing,
+bukan dalam database akun. Berpindah domain tidak memindahkan catatan browser
+secara otomatis. GitHub Pages melayani berkas statis; komputasi SageMath atau
+penyimpanan terpusat memerlukan layanan terpisah.
+
+MathJax dan data font disertakan pada `dist/vendor/`; pertahankan lisensi
+pihak ketiga yang menyertainya. Metadata hosting lama pada `.openai/` tidak
+digunakan oleh workflow GitHub Pages dan tidak masuk ke berkas website publik.
