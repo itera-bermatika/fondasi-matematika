@@ -75,7 +75,10 @@
     const span=document.createElement(display?'div':'span');
     span.className=display?'equation-inline equation-display':'equation-inline';
     span.dataset.texSource=source;span.dataset.texDisplay=String(display);
-    span.textContent=display?`\\[${source}\\]`:`\\(${source}\\)`;
+    // Keep simple signs readable while MathJax loads, including on a slow
+    // connection. The TeX source stays in data-tex-source for the renderer.
+    const signs={'\\surd':'√','\\approx':'≈','\\ne':'≠','\\le':'≤','\\ge':'≥','\\times':'×','\\div':'÷','\\pm':'±'};
+    span.textContent=signs[source]??(display?`\\[${source}\\]`:`\\(${source}\\)`);
     return span;
   }
   let rendering=false,queued=false;

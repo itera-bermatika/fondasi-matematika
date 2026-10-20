@@ -1,6 +1,6 @@
 # Mathematical notation
 
-All lessons load the locally hosted MathJax 4.1.3 renderer. Font data and optional
+All lessons load the locally hosted MathJax 4.1.3 renderer with STIX Two math glyphs. Font data and optional
 extensions are local under `dist/vendor/`. Update the runtime and font together.
 The upstream Apache-2.0 license is in `dist/vendor/mathjax/LICENSE`.
 
@@ -40,3 +40,7 @@ unconverted mathematical text after the shared renderer reaches `ready`.
 
 Equation picker buttons retain the original select values and change events.
 Do not remove those selects unless also updating the activity implementation.
+
+STIX Two SVG glyph data is served locally from `dist/vendor/mathjax-stix2-font`.
+Shared equation assets use a version query in every lesson to refresh cached
+rendering settings, including in Edge, when the font changes.
