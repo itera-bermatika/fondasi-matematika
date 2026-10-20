@@ -50,6 +50,8 @@ jobs:
         run: node tests/fungsi-rasional.test.cjs
       - name: Periksa fungsi eksponensial
         run: node tests/fungsi-eksponensial.test.cjs
+      - name: Periksa logaritma
+        run: node tests/fungsi-logaritma.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
