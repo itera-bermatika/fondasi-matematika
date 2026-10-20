@@ -32,6 +32,8 @@ jobs:
         run: node tests/koordinat.test.cjs
       - name: Periksa grafik garis
         run: node tests/garis.test.cjs
+      - name: Periksa aktivitas fungsi
+        run: node tests/fungsi.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
