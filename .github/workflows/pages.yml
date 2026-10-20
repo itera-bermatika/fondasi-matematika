@@ -26,6 +26,8 @@ jobs:
       - uses: actions/checkout@v6
       - name: Periksa berkas website
         run: python3 scripts/check-site.py
+      - name: Periksa perhitungan aktivitas persamaan
+        run: node tests/persamaan-linear.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
