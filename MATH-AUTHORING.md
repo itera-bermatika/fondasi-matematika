@@ -27,5 +27,16 @@ cannot restore stale answers. Unavailable rendering leaves readable source or
 native MathML in place. Student answer inputs and reflection notes are not
 typeset.
 
+Standalone mathematical signs (including the root sign and approximation sign)
+are explicitly typeset too. Authored `<math>` input does not need a compatibility
+wrapper: the shared renderer finds it anywhere outside MathJax output and
+`data-no-equation` regions, including content added after initial load.
+
+MathJax retains hidden MathML inside `mjx-assistive-mml` for screen readers.
+Its presence is intentional and does not mean the visible expression uses the
+browser's native MathML rendering. When auditing, exclude `mjx-container` and
+`mjx-assistive-mml`; check for remaining source `<math>`, rendering errors, and
+unconverted mathematical text after the shared renderer reaches `ready`.
+
 Equation picker buttons retain the original select values and change events.
 Do not remove those selects unless also updating the activity implementation.

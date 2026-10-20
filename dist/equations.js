@@ -85,12 +85,19 @@
     if(rendering||!window.MathJax?.mathml2svgPromise)return;
     rendering=true;queued=false;document.documentElement.dataset.equationsState='rendering';
     try{
-      const sources=[...document.querySelectorAll('.equation-inline > math,.frac[data-equation-fraction] > math,.equation-inline[data-tex-source]:not([data-renderer="mathjax"])')];
+      // Also accept authored MathML outside compatibility wrappers. Never
+      // reprocess MathJax's hidden accessibility copy of an equation.
+      const sources=[...document.querySelectorAll('math,.equation-inline[data-tex-source]:not([data-renderer="mathjax"])')]
+        .filter(source=>!source.closest('mjx-container,mjx-assistive-mml,[data-no-equation]'));
       for(const source of sources){
         if(!source.isConnected||pending.has(source))continue;
         pending.add(source);
         const isTeX=source.hasAttribute('data-tex-source');
-        const host=isTeX?source:source.parentElement;
+        let host=isTeX?source:source.parentElement;
+        if(!isTeX&&!host.matches('.equation-inline,.frac[data-equation-fraction]')){
+          const wrapper=document.createElement('span');wrapper.className='equation-inline';
+          source.before(wrapper);wrapper.append(source);host=wrapper;
+        }
         if(!isTeX&&host.closest('.formula,.equation-display'))source.setAttribute('displaystyle','true');
         const size=parseFloat(getComputedStyle(host).fontSize)||18;
         const options={display:isTeX&&source.dataset.texDisplay==='true',em:size,ex:size/2,containerWidth:host.clientWidth||document.documentElement.clientWidth};
@@ -134,6 +141,13 @@
     if (text.parentElement.closest('svg') && !text.parentElement.closest('.equation-svg')) return;
     const source = text.nodeValue;
     if (!source.trim()) return;
+    // A symbol discussed on its own is still mathematical notation. The
+    // expression scanner below deliberately requires an operand, so handle
+    // these explicitly (\surd denotes the root sign without a radicand).
+    const symbols={'√':'\\surd','≈':'\\approx','=':'=','≠':'\\ne','≤':'\\le','≥':'\\ge','×':'\\times','÷':'\\div','+':'+','−':'-','±':'\\pm'};
+    if(Object.hasOwn(symbols,source.trim())){
+      text.replaceWith(texEquation(symbols[source.trim()]));return;
+    }
     const texPattern=/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]|\$\$([\s\S]*?)\$\$/g;
     const texMatches=[...source.matchAll(texPattern)];
     if(texMatches.length){
