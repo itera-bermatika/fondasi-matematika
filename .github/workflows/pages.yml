@@ -40,6 +40,8 @@ jobs:
         run: node tests/komposisi-fungsi.test.cjs
       - name: Periksa fungsi invers
         run: node tests/fungsi-invers.test.cjs
+      - name: Periksa transformasi grafik
+        run: node tests/transformasi-fungsi.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

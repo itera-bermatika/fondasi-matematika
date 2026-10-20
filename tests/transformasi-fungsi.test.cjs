@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const c=require('../dist/transformasi-fungsi-core.js');
+assert.deepEqual(c.transform(1,4,2,3,-1),{x:4,y:7});assert.deepEqual(c.range(-2,3),{min:-Infinity,max:3});assert.deepEqual(c.range(0,2),{min:2,max:2});assert.equal(c.value(-2,1,-2,-3),-3);
+for(const a of [-2,-1.5,-1,-.5,.5,1,1.5,2])for(let h=-2;h<=2;h++)for(let k=-2;k<=2;k++){assert.equal(c.value(h,a,h,k),k);for(const u of [-2,-1,0,.5,1,2]){const t=c.transform(u,u*u,a,h,k);assert.equal(c.value(t.x,a,h,k),t.y);const r=c.range(a,k);assert.ok(t.y>=r.min&&t.y<=r.max);}const tracked=c.transform(1,1,a,h,k),p=c.point(tracked.x,tracked.y);assert.ok(p.x>=30&&p.x<=330&&p.y>=30&&p.y<=330);}
+assert.deepEqual(c.point(0,0),{x:180,y:180});console.log('OK: point correspondence, vertex, reflected ranges, zero scaling and every lab parameter combination.');
