@@ -60,6 +60,8 @@ jobs:
         run: node tests/lingkaran-satuan.test.cjs
       - name: Periksa perbandingan trigonometri
         run: node tests/tangen.test.cjs
+      - name: Periksa grafik sinus dan kosinus
+        run: node tests/grafik-trigonometri.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
