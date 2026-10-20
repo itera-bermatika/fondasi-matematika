@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const c=require('../dist/fungsi-eksponensial-core.js');
+assert.deepEqual(c.exact(3,'two',-2),{n:3,d:4});assert.equal(c.value(1,'half',0),1);assert.ok(Math.abs(c.value(1,'third',-2)-9)<1e-10);
+for(const key of Object.keys(c.bases))for(let A=1;A<=3;A++){const b=c.bases[key].n/c.bases[key].d;assert.equal(c.value(A,key,0),A);for(let x=-2;x<=3;x++){const q=c.exact(A,key,x);assert.ok(q.n>0&&q.d>0);assert.ok(Math.abs(q.n/q.d-c.value(A,key,x))<1e-10);assert.ok(Math.abs(c.value(A,key,x+1)/c.value(A,key,x)-b)<1e-10);assert.equal(c.value(A,key,x+1)>c.value(A,key,x),b>1);}assert.ok(c.value(A,key,b>1?-20:20)>0);assert.ok(c.value(A,key,b>1?-20:20)<.001);}
+assert.deepEqual(c.point(0,0),{x:180,y:310});console.log('OK: negative/zero exponents, exact fractions, fixed ratios, growth/decay and positive outputs.');

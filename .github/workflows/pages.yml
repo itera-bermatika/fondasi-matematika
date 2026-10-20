@@ -48,6 +48,8 @@ jobs:
         run: node tests/fungsi-polinomial.test.cjs
       - name: Periksa fungsi rasional
         run: node tests/fungsi-rasional.test.cjs
+      - name: Periksa fungsi eksponensial
+        run: node tests/fungsi-eksponensial.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
