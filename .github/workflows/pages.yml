@@ -66,6 +66,8 @@ jobs:
         run: node tests/persamaan-trigonometri.test.cjs
       - name: Periksa identitas trigonometri
         run: node tests/identitas-trigonometri.test.cjs
+      - name: Periksa fungsi trigonometri invers
+        run: node tests/trigonometri-invers.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
