@@ -72,6 +72,8 @@ jobs:
         run: node tests/penerapan-trigonometri.test.cjs
       - name: Periksa laju perubahan rata-rata
         run: node tests/laju-perubahan.test.cjs
+      - name: Periksa gagasan limit
+        run: node tests/gagasan-limit.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
