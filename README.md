@@ -1,5 +1,9 @@
 # Fondasi Matematika
 
+- Website: https://itera-bermatika.github.io/fondasi-matematika/
+- Portal bahan belajar: https://itera-bermatika.github.io/
+- Repositori: https://github.com/itera-bermatika/fondasi-matematika
+
 Bacaan interaktif berbahasa Indonesia untuk membantu mahasiswa membangun
 kembali fondasi matematika. Materi awal mencakup sebelas bacaan prekalkulus,
 dengan eksplorasi, latihan, pembahasan, dan MathJax berfont STIX Two.
