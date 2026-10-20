@@ -76,6 +76,8 @@ jobs:
         run: node tests/gagasan-limit.test.cjs
       - name: Periksa perhitungan limit dasar
         run: node tests/limit-dasar.test.cjs
+      - name: Periksa kekontinuan fungsi
+        run: node tests/kekontinuan.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
