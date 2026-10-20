@@ -1,4 +1,4 @@
-/* Shared mathematical typography for static reading and live activities. */
+/* MathJax rendering, with a compatibility reader for the original plain-text lessons. */
 (() => {
   'use strict';
   const NS = 'http://www.w3.org/1998/Math/MathML';
@@ -69,22 +69,81 @@
     math.setAttribute('aria-label',source);
     math.setAttribute('data-source',source);
     const span = document.createElement('span');
-    span.className = 'equation-inline'; span.append(math); return span;
+    span.className = 'equation-inline'; span.dataset.mathSource=source; span.append(math); return span;
   }
+  function texEquation(source,display=false){
+    const span=document.createElement(display?'div':'span');
+    span.className=display?'equation-inline equation-display':'equation-inline';
+    span.dataset.texSource=source;span.dataset.texDisplay=String(display);
+    span.textContent=display?`\\[${source}\\]`:`\\(${source}\\)`;
+    return span;
+  }
+  let rendering=false,queued=false;
+  const pending=new WeakSet();
+  async function typesetEquations(){
+    queued=true;
+    if(rendering||!window.MathJax?.mathml2svgPromise)return;
+    rendering=true;queued=false;document.documentElement.dataset.equationsState='rendering';
+    try{
+      const sources=[...document.querySelectorAll('.equation-inline > math,.frac[data-equation-fraction] > math,.equation-inline[data-tex-source]:not([data-renderer="mathjax"])')];
+      for(const source of sources){
+        if(!source.isConnected||pending.has(source))continue;
+        pending.add(source);
+        const isTeX=source.hasAttribute('data-tex-source');
+        const host=isTeX?source:source.parentElement;
+        if(!isTeX&&host.closest('.formula,.equation-display'))source.setAttribute('displaystyle','true');
+        const size=parseFloat(getComputedStyle(host).fontSize)||18;
+        const options={display:isTeX&&source.dataset.texDisplay==='true',em:size,ex:size/2,containerWidth:host.clientWidth||document.documentElement.clientWidth};
+        try{
+          const output=isTeX?await window.MathJax.tex2svgPromise(source.dataset.texSource,options):await window.MathJax.mathml2svgPromise(source.outerHTML,options);
+          const graphic=output.querySelector('svg');
+          if(graphic){
+            for(const dimension of ['width','height']){
+              const value=graphic.getAttribute(dimension);
+              if(value)graphic.style.setProperty(dimension,value,'important');
+            }
+          }
+          if(source.isConnected){
+            if(isTeX)source.replaceChildren(output);else source.replaceWith(output);
+            host.dataset.renderer='mathjax';
+          }
+        }catch(error){
+          host.dataset.equationError='true';
+          console.error('Equation rendering failed:',error.message);
+        }finally{pending.delete(source)}
+      }
+      window.MathJax.startup.document.reset();
+      window.MathJax.startup.document.updateDocument();
+    }finally{
+      rendering=false;document.documentElement.dataset.equationsState='ready';
+      if(queued)typesetEquations();
+    }
+  }
+  document.addEventListener('fondasi-mathjax-ready',typesetEquations);
   // Only isolated mathematical identifiers are recognized, never fragments of words.
-  const identifier = '(?:xy|ab|ac|pq|qx|px|kx|kb|mn|[a-dkmnpqtx-yABC])';
+  const identifier = '(?:Ax|Bx|Cx|xy|ab|ac|pq|qx|px|kx|kb|mn|[a-dkmnpqtx-yABC])';
   const number = '\\d+(?:[.,]\\d+)*½?';
   const power = '[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ᵃᵇᶜᵈᵐⁿᵖᵠˣ]*';
   const atomPattern = `(?:${number}(?:${identifier})?|${identifier}|[□½])${power}(?![\\p{L}\\p{N}])`;
   const operator = '[()+−\\-×÷/=<>≠≤≥≈±√|→\\[\\]]';
   const superscriptPattern = '[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ᵃᵇᶜᵈᵐⁿᵖᵠˣ]+';
   const run = new RegExp(`(?<![\\p{L}\\p{N}])(?:${atomPattern}|[√(−\\-|=<>≠≤≥≈±])(?:\\s*(?:${atomPattern}|${operator}|${superscriptPattern}))*`, 'gu');
-  const excluded = 'math,.equation-inline,script,style,textarea,input,select,option,[data-no-equation]';
+  const excluded = 'math,mjx-container,.equation-inline,.frac[data-equation-fraction],script,style,textarea,input,select,option,[data-no-equation]';
   function textNode(text) {
     if (!text.parentElement || text.parentElement.closest(excluded)) return;
     if (text.parentElement.closest('svg') && !text.parentElement.closest('.equation-svg')) return;
     const source = text.nodeValue;
     if (!source.trim()) return;
+    const texPattern=/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]|\$\$([\s\S]*?)\$\$/g;
+    const texMatches=[...source.matchAll(texPattern)];
+    if(texMatches.length){
+      const fragment=document.createDocumentFragment();let last=0;
+      for(const match of texMatches){
+        fragment.append(document.createTextNode(source.slice(last,match.index)),texEquation(match[1]??match[2]??match[3],match[1]===undefined));
+        last=match.index+match[0].length;
+      }
+      fragment.append(document.createTextNode(source.slice(last)));text.replaceWith(fragment);return;
+    }
     run.lastIndex = 0; const matches = [...source.matchAll(run)];
     if (!matches.length) return;
     const fragment = document.createDocumentFragment(); let last = 0, changed = false;
@@ -107,6 +166,11 @@
     if (root.nodeType === Node.TEXT_NODE) { textNode(root); return; }
     if (!(root instanceof Element) || root.closest(excluded)) return;
     if (root.closest('svg') && !root.closest('.equation-svg')) return;
+    for(const authored of root.querySelectorAll('[data-tex]:not([data-tex-ready])')){
+      const tex=authored.dataset.tex;
+      const display=authored.dataset.display==='block';
+      authored.replaceChildren(texEquation(tex,display));authored.dataset.texReady='true';
+    }
     // Replace the previous hand-built fraction with a real fraction layout.
     for (const old of root.querySelectorAll('.frac:not([data-equation-fraction])')) {
       const parts = [...old.children];
@@ -154,6 +218,7 @@
   const graphLabels = new WeakMap();
   function syncGraphs() {
     for (const text of document.querySelectorAll('svg text')) {
+      if(text.closest('mjx-container'))continue;
       const source=text.textContent;
       if(!source.trim())continue;
       const key=[source,text.getAttribute('x'),text.getAttribute('y')].join('|');
@@ -184,7 +249,7 @@
       if (busy) return;
       const roots=new Set();
       for(const record of records){
-        if(record.target instanceof Element && record.target.closest('math,.equation-inline,svg')) continue;
+        if(record.target instanceof Element && record.target.closest('math,mjx-container,.equation-inline,.frac[data-equation-fraction],svg')) continue;
         roots.add(record.target.nodeType===Node.TEXT_NODE?record.target.parentElement:record.target);
       }
       if(!roots.size)return;
@@ -201,6 +266,7 @@
         label.append(copy);
       }
       render(document.body);syncPickers();syncGraphs();
+      typesetEquations();
       observer.observe(document.body,{childList:true,subtree:true,characterData:true});busy=false;
     }
     document.addEventListener('change',()=>setTimeout(refresh,0));
