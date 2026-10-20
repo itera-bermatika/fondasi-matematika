@@ -74,6 +74,8 @@ jobs:
         run: node tests/laju-perubahan.test.cjs
       - name: Periksa gagasan limit
         run: node tests/gagasan-limit.test.cjs
+      - name: Periksa perhitungan limit dasar
+        run: node tests/limit-dasar.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
