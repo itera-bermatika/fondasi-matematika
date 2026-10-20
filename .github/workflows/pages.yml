@@ -58,6 +58,8 @@ jobs:
         run: node tests/sudut-radian.test.cjs
       - name: Periksa lingkaran satuan
         run: node tests/lingkaran-satuan.test.cjs
+      - name: Periksa perbandingan trigonometri
+        run: node tests/tangen.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

@@ -1,0 +1,2 @@
+((root,factory)=>{const api=factory(typeof module==='object'&&module.exports?require('./lingkaran-satuan-core.js'):root.UnitCircleLesson);if(typeof module==='object'&&module.exports)module.exports=api;else root.TangentLesson=api;})(typeof window==='undefined'?globalThis:window,c=>{
+'use strict';function ratios(degrees){const p=c.coordinates(degrees);return {...p,tan:p.cos===0?null:(p.sin===0?0:p.sin/p.cos),cot:p.sin===0?null:(p.cos===0?0:p.cos/p.sin),sec:p.cos===0?null:1/p.cos,csc:p.sin===0?null:1/p.sin};}return {ratios};});
