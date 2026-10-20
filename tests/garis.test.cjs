@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const {slope,clip,point}=require('../dist/garis-core.js');
+assert.equal(slope(1,2,3,3),.5);assert.equal(slope(3,3,1,2),.5);assert.equal(slope(0,3,2,-1),-2);assert.equal(slope(-2,3,4,3),0);assert.equal(slope(2,0,2,3),null);
+for(let m=-2;m<=2;m+=.5)for(let b=-2;b<=2;b++){const ends=clip(m,b);assert.equal(ends.length,2);for(const p of ends){assert.ok(Math.abs(p.y-(m*p.x+b))<1e-10);assert.ok(Math.abs(p.x)<=5&&Math.abs(p.y)<=5);assert.ok(Math.abs(p.x)===5||Math.abs(p.y)===5);}assert.ok(Math.abs(slope(ends[0].x,ends[0].y,ends[1].x,ends[1].y)-m)<1e-10);}
+assert.deepEqual(point(0,0),{x:60,y:60});assert.ok(point(1,1).x>60&&point(1,1).y<60);assert.equal(clip(0,6),null);console.log('OK: positive/negative/zero/undefined slopes and all graph slider combinations.');

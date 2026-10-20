@@ -30,6 +30,8 @@ jobs:
         run: node tests/persamaan-linear.test.cjs
       - name: Periksa bidang koordinat
         run: node tests/koordinat.test.cjs
+      - name: Periksa grafik garis
+        run: node tests/garis.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

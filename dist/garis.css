@@ -1,0 +1,3 @@
+.line-overlay{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}#graph-line{stroke:#244d40;stroke-width:.8}#slope-triangle{fill:none;stroke:#b4754f;stroke-width:.6;stroke-dasharray:1.4 1}#intercept-dot,#step-dot{fill:#b4754f;stroke:#fafaf5;stroke-width:.4}#line-feedback{min-height:100px}.line-overlay{pointer-events:none}#isi .equation-inline{overflow:visible}
+
+.plane svg.line-overlay{margin:0;border:0;border-radius:0;background:transparent;display:block}
