@@ -34,6 +34,8 @@ jobs:
         run: node tests/garis.test.cjs
       - name: Periksa aktivitas fungsi
         run: node tests/fungsi.test.cjs
+      - name: Periksa domain dan range
+        run: node tests/domain-range.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

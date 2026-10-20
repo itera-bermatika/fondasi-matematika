@@ -1,0 +1,5 @@
+const assert=require('node:assert/strict');const {allowed,evaluate,squareRange,point}=require('../dist/domain-range-core.js');
+assert.equal(allowed('reciprocal',1),false);assert.equal(evaluate('reciprocal',1),null);assert.equal(evaluate('reciprocal',0),-1);assert.equal(evaluate('reciprocal',2),1);assert.equal(allowed('root',1.99),false);assert.equal(evaluate('root',2),0);assert.equal(evaluate('root',6),2);assert.equal(evaluate('square',-3),9);
+assert.deepEqual(squareRange(-2,3),{min:0,max:9,minIncluded:true,maxIncluded:true});assert.deepEqual(squareRange(1,3,true),{min:1,max:9,minIncluded:false,maxIncluded:true});assert.deepEqual(squareRange(-3,-1,true,false),{min:1,max:9,minIncluded:true,maxIncluded:false});assert.deepEqual(squareRange(-2,2,true,true),{min:0,max:4,minIncluded:true,maxIncluded:false});assert.equal(squareRange(-2,2,true,false).maxIncluded,true);assert.equal(squareRange(0,2,true,false).minIncluded,false);
+for(let x=-3;x<=3;x+=.125){const p=point(x,x*x);assert.ok(p.x>=60&&p.x<=300&&p.y>=40&&p.y<=310);}
+console.log('OK: forbidden inputs, valid boundary, square range across zero and open/closed endpoint inclusion.');
