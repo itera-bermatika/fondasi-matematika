@@ -82,6 +82,8 @@ jobs:
         run: node tests/limit-tak-hingga.test.cjs
       - name: Periksa garis sekan dan singgung
         run: node tests/garis-singgung.test.cjs
+      - name: Periksa cek kesiapan kalkulus
+        run: node tests/kesiapan-kalkulus.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
