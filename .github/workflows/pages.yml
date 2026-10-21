@@ -92,6 +92,8 @@ jobs:
         run: node tests/persamaan-pecahan-akar.test.cjs
       - name: Periksa operasi interval dan pertidaksamaan majemuk
         run: node tests/pertidaksamaan-majemuk.test.cjs
+      - name: Periksa persamaan dan pertidaksamaan nilai mutlak
+        run: node tests/nilai-mutlak.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

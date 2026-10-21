@@ -1,0 +1,4 @@
+const assert=require('node:assert/strict');const {solve,accepts,contains,intervalTex}=require('../dist/nilai-mutlak-core.js');
+for(let a=-3;a<=3;a++)for(let r=-2;r<=4;r++)for(const relation of ['=','<','<=','>','>=']){const result=solve(a,r,relation);for(let x=-8;x<=8;x+=.25){const d=Math.abs(x-a);const expected=relation==='='?d===r:relation==='<'?d<r:relation==='<='?d<=r:relation==='>'?d>r:d>=r;assert.equal(result.some(i=>contains(i,x)),expected,`${a},${r},${relation},${x}`);assert.equal(accepts(a,r,relation,x),expected);}}
+assert.equal(intervalTex(solve(2,3,'=')),'\\{-1\\}\\cup\\{5\\}');assert.equal(intervalTex(solve(2,0,'<=')),'\\{2\\}');assert.deepEqual(solve(2,0,'<'),[]);assert.equal(solve(2,0,'>').some(i=>contains(i,2)),false);assert.equal(solve(2,-1,'>')[0].lo,-Infinity);assert.deepEqual(solve(2,-1,'='),[]);
+console.log('OK: every lab center, relation and radius, quarter-step membership, zero/negative bounds, open/closed endpoints and equality points.');

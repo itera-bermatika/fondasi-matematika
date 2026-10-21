@@ -1,0 +1,6 @@
+((root,factory)=>{const api=factory(typeof module==='object'&&module.exports?require('./pertidaksamaan-majemuk-core.js'):root.CompoundLesson);if(typeof module==='object'&&module.exports)module.exports=api;else root.AbsoluteLesson=api;})(typeof window==='undefined'?globalThis:window,intervals=>{
+'use strict';const all=()=>[{lo:-Infinity,hi:Infinity,lc:false,hc:false}],point=a=>({lo:a,hi:a,lc:true,hc:true});
+function solve(a,r,relation){if(!Number.isFinite(a)||!Number.isFinite(r)||!['=','<','<=','>','>='].includes(relation))throw new RangeError('Pusat, batas jarak, dan hubungan harus sah.');if(r<0)return ['>','>='].includes(relation)?all():[];if(r===0){if(['=','<='].includes(relation))return [point(a)];if(relation==='<')return [];if(relation==='>=')return all();return [{lo:-Infinity,hi:a,lc:false,hc:false},{lo:a,hi:Infinity,lc:false,hc:false}];}if(relation==='=')return [point(a-r),point(a+r)];if(['<','<='].includes(relation))return [{lo:a-r,hi:a+r,lc:relation==='<=',hc:relation==='<='}];return [{lo:-Infinity,hi:a-r,lc:false,hc:relation==='>='},{lo:a+r,hi:Infinity,lc:relation==='>=',hc:false}];}
+function accepts(a,r,relation,x){const d=Math.abs(x-a);return relation==='='?d===r:relation==='<'?d<r:relation==='<='?d<=r:relation==='>'?d>r:d>=r;}
+return {solve,accepts,contains:intervals.contains,intervalTex:intervals.intervalTex};
+});
