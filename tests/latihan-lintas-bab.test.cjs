@@ -1,0 +1,7 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');const {groups,questions,check,assess,clean}=require('../dist/latihan-lintas-bab-core.js');
+const answers={m01:'5',m02:'1',m03:'0',m04:'3',m05:'2',m06:'1',m07:'4',m08:'2',m09:'-4/5',m10:'4',m11:'0',m12:'1'};
+assert.equal(groups.length,4);assert.equal(questions.length,12);assert.equal(new Set(questions.map(q=>q.id)).size,12);for(const g of groups)assert.equal(questions.filter(q=>q.group===g.id).length,3);assert.equal(assess(answers).correct,12);
+assert.equal(check(questions[8],'-8/10'),'correct');assert.equal(check(questions[8],'-0,8'),'correct');assert.equal(check(questions[0],'abc'),'invalid');assert.equal(check(questions[0],'1/0'),'invalid');assert.equal(check(questions[0],''),'pending');
+let r=assess({m01:'abc',m02:'0'},['a']);assert.equal(r.invalid,1);assert.equal(r.incorrect,1);assert.equal(r.pending,1);assert.equal(r.unchecked,9);assert.ok(r.review.some(a=>a[0]==='persamaan-pecahan-akar.html'));assert.ok(!r.review.some(a=>a[0]==='bentuk-akar.html'));assert.deepEqual(assess({m01:'abc'},['a']).review,[]);assert.equal(assess(answers,[]).unchecked,12);
+assert.deepEqual(clean({m01:' 5 ',bad:'1',m02:3}),{m01:'5'});assert.deepEqual(clean([]),{});for(const q of questions)for(const [href]of q.review)assert.ok(fs.existsSync(path.join(__dirname,'../dist',href)));
+console.log('OK: twelve authored answers, equivalent fractions/decimal comma, partial packets, invalid/pending/unchecked separation, targeted reviews and local lesson links.');

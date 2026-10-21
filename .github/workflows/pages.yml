@@ -102,6 +102,8 @@ jobs:
         run: node tests/fungsi-per-bagian.test.cjs
       - name: Periksa pembacaan grafik dan himpunan masukan
         run: node tests/membaca-grafik.test.cjs
+      - name: Periksa latihan penghubung lintas bab
+        run: node tests/latihan-lintas-bab.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
