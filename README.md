@@ -5,7 +5,7 @@
 - Repositori: https://github.com/itera-bermatika/fondasi-matematika
 
 Bacaan interaktif berbahasa Indonesia untuk membantu mahasiswa membangun
-kembali fondasi matematika. Materi awal mencakup sebelas bacaan prekalkulus,
+kembali fondasi matematika. Saat ini tersedia 41 halaman belajar dalam sembilan kelompok materi,
 dengan eksplorasi, latihan, pembahasan, dan MathJax berfont STIX Two.
 
 ## Menjalankan di komputer
