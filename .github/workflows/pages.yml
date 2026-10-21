@@ -86,6 +86,8 @@ jobs:
         run: node tests/kesiapan-kalkulus.test.cjs
       - name: Periksa representasi bilangan real
         run: node tests/bilangan-real.test.cjs
+      - name: Periksa akar dan pangkat rasional
+        run: node tests/bentuk-akar.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
