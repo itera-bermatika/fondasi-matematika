@@ -50,3 +50,9 @@ penyimpanan terpusat memerlukan layanan terpisah.
 MathJax dan data font disertakan pada `dist/vendor/`; pertahankan lisensi
 pihak ketiga yang menyertainya. Metadata hosting lama pada `.openai/` tidak
 digunakan oleh workflow GitHub Pages dan tidak masuk ke berkas website publik.
+
+## Uji coba mahasiswa
+
+Panduan dan formulir: [uji-coba.html](https://itera-bermatika.github.io/fondasi-matematika/uji-coba.html). Halaman pendukung ini berada di luar 41 halaman materi.
+Formulir menyimpan draf di browser dan mengunduh teks; tidak mengumpulkan tanggapan ke server. Jangan memasukkan tanggapan mahasiswa ke repositori publik.
+Panduan pelaksanaan: `dist/panduan-uji-coba.md`; lembar pengamatan: `dist/lembar-pengamatan.csv`.
