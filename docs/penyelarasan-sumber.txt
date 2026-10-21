@@ -1,0 +1,1 @@
+Pemetaan awal 21 Oktober 2026. Sumber: buku-prekalkulus/source/Main_Prekalkulus.tex dan 18 berkas Bab_*.tex yang disertakan olehnya. Buku tidak diubah. Peta publik: dist/peta-buku.html. Status menyatakan cakupan topik, bukan validasi substansi menyeluruh. Tambahan pertama: dist/bilangan-real.html.

@@ -84,6 +84,8 @@ jobs:
         run: node tests/garis-singgung.test.cjs
       - name: Periksa cek kesiapan kalkulus
         run: node tests/kesiapan-kalkulus.test.cjs
+      - name: Periksa representasi bilangan real
+        run: node tests/bilangan-real.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
