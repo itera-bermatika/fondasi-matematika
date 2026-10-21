@@ -24,6 +24,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
+      - name: Periksa konsistensi urutan navigasi
+        run: python3 scripts/sync-navigation.py --check
+      - name: Periksa pencegahan navigasi yang menyimpang
+        run: python3 tests/navigation.test.py
       - name: Periksa berkas website
         run: python3 scripts/check-site.py
       - name: Periksa perhitungan aktivitas persamaan

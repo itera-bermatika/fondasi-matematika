@@ -60,3 +60,11 @@ Panduan pelaksanaan: `dist/panduan-uji-coba.md`; lembar pengamatan: `dist/lembar
 Peta penyelarasan 18 bab buku: [peta-buku.html](https://itera-bermatika.github.io/fondasi-matematika/peta-buku.html). Peta buku dan halaman uji coba adalah halaman pendukung, di luar jumlah bacaan.
 
 Latihan penghubung: `dist/latihan-lintas-bab.html` (12 soal, empat paket). Tinjauan ulang cakupan dan batasnya: `docs/TINJAUAN-PENYELARASAN-2026-10-21.md`.
+
+## Urutan navigasi
+
+`reading-order.json` adalah acuan urutan 51 bacaan/latihan. Urutan tautan pada peta di `dist/app.js` harus sama. Setelah mengubah urutan atau menambah halaman, jalankan `python scripts/sync-navigation.py`, lalu `python scripts/sync-navigation.py --check` dan `python scripts/check-site.py`.
+
+Tombol kanan atas pada bacaan selalu menuju bacaan berikutnya, sesuai tautan bawah. Judul tujuan tersedia pada label aksesibilitas dan tooltip. Beranda dan halaman pendukung memulai dari bacaan pertama; saat beranda menampilkan bacaan kesetaraan, tombol berubah mengikuti posisi bacaan itu. Halaman latihan terakhir kembali ke peta belajar. Halaman pendukung dideklarasikan terpisah dan tidak menambah urutan materi.
+
+Menu peta tetap terlihat pada ponsel, dengan label ringkas “Peta”. Prasyarat dan bacaan tambahan tetap ditautkan pada isi bacaan, bukan dijadikan tujuan tombol Lanjut.

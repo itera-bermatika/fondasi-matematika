@@ -1,0 +1,308 @@
+[
+  {
+    "page": "bilangan.html",
+    "before": "index.html#bacaan",
+    "expected": "bilangan-real.html",
+    "missing": false
+  },
+  {
+    "page": "bilangan-real.html",
+    "before": null,
+    "expected": "pecahan.html",
+    "missing": true
+  },
+  {
+    "page": "pecahan.html",
+    "before": "bilangan.html",
+    "expected": "operasi-pecahan.html",
+    "missing": false
+  },
+  {
+    "page": "operasi-pecahan.html",
+    "before": "pecahan.html",
+    "expected": "perkalian-pecahan.html",
+    "missing": false
+  },
+  {
+    "page": "perkalian-pecahan.html",
+    "before": "pecahan.html",
+    "expected": "pembagian-pecahan.html",
+    "missing": false
+  },
+  {
+    "page": "pembagian-pecahan.html",
+    "before": "perkalian-pecahan.html",
+    "expected": "urutan-operasi.html",
+    "missing": false
+  },
+  {
+    "page": "urutan-operasi.html",
+    "before": "pembagian-pecahan.html",
+    "expected": "pangkat-akar.html",
+    "missing": false
+  },
+  {
+    "page": "pangkat-akar.html",
+    "before": "urutan-operasi.html",
+    "expected": "index.html#bacaan",
+    "missing": false
+  },
+  {
+    "page": "index.html",
+    "before": "#bacaan",
+    "expected": "variabel-ekspresi.html",
+    "missing": false
+  },
+  {
+    "page": "variabel-ekspresi.html",
+    "before": "urutan-operasi.html",
+    "expected": "distributif.html",
+    "missing": false
+  },
+  {
+    "page": "distributif.html",
+    "before": "variabel-ekspresi.html",
+    "expected": "faktorisasi.html",
+    "missing": false
+  },
+  {
+    "page": "faktorisasi.html",
+    "before": "distributif.html",
+    "expected": "bentuk-akar.html",
+    "missing": false
+  },
+  {
+    "page": "bentuk-akar.html",
+    "before": null,
+    "expected": "persamaan-linear.html",
+    "missing": true
+  },
+  {
+    "page": "persamaan-linear.html",
+    "before": "variabel-ekspresi.html",
+    "expected": "persamaan-pecahan-akar.html",
+    "missing": false
+  },
+  {
+    "page": "persamaan-pecahan-akar.html",
+    "before": null,
+    "expected": "pertidaksamaan-linear.html",
+    "missing": true
+  },
+  {
+    "page": "pertidaksamaan-linear.html",
+    "before": "variabel-ekspresi.html",
+    "expected": "pertidaksamaan-majemuk.html",
+    "missing": false
+  },
+  {
+    "page": "pertidaksamaan-majemuk.html",
+    "before": null,
+    "expected": "nilai-mutlak.html",
+    "missing": true
+  },
+  {
+    "page": "nilai-mutlak.html",
+    "before": null,
+    "expected": "pertidaksamaan-kuadrat.html",
+    "missing": true
+  },
+  {
+    "page": "pertidaksamaan-kuadrat.html",
+    "before": null,
+    "expected": "koordinat.html",
+    "missing": true
+  },
+  {
+    "page": "koordinat.html",
+    "before": "bilangan.html",
+    "expected": "jarak-titik-tengah.html",
+    "missing": false
+  },
+  {
+    "page": "jarak-titik-tengah.html",
+    "before": null,
+    "expected": "garis.html",
+    "missing": true
+  },
+  {
+    "page": "garis.html",
+    "before": "bilangan.html",
+    "expected": "fungsi.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi.html",
+    "before": "garis.html",
+    "expected": "domain-range.html",
+    "missing": false
+  },
+  {
+    "page": "domain-range.html",
+    "before": "fungsi.html",
+    "expected": "fungsi-per-bagian.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-per-bagian.html",
+    "before": null,
+    "expected": "membaca-grafik.html",
+    "missing": true
+  },
+  {
+    "page": "membaca-grafik.html",
+    "before": null,
+    "expected": "komposisi-fungsi.html",
+    "missing": true
+  },
+  {
+    "page": "komposisi-fungsi.html",
+    "before": "domain-range.html",
+    "expected": "fungsi-invers.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-invers.html",
+    "before": "komposisi-fungsi.html",
+    "expected": "transformasi-fungsi.html",
+    "missing": false
+  },
+  {
+    "page": "transformasi-fungsi.html",
+    "before": "fungsi-invers.html",
+    "expected": "fungsi-kuadrat.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-kuadrat.html",
+    "before": "transformasi-fungsi.html",
+    "expected": "fungsi-polinomial.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-polinomial.html",
+    "before": "fungsi-kuadrat.html",
+    "expected": "fungsi-rasional.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-rasional.html",
+    "before": "fungsi-polinomial.html",
+    "expected": "fungsi-eksponensial.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-eksponensial.html",
+    "before": "fungsi-rasional.html",
+    "expected": "fungsi-logaritma.html",
+    "missing": false
+  },
+  {
+    "page": "fungsi-logaritma.html",
+    "before": "fungsi-eksponensial.html",
+    "expected": "persamaan-eksponen-log.html",
+    "missing": false
+  },
+  {
+    "page": "persamaan-eksponen-log.html",
+    "before": "fungsi-logaritma.html",
+    "expected": "sudut-radian.html",
+    "missing": false
+  },
+  {
+    "page": "sudut-radian.html",
+    "before": "persamaan-eksponen-log.html",
+    "expected": "lingkaran-satuan.html",
+    "missing": false
+  },
+  {
+    "page": "lingkaran-satuan.html",
+    "before": "sudut-radian.html",
+    "expected": "tangen.html",
+    "missing": false
+  },
+  {
+    "page": "tangen.html",
+    "before": "lingkaran-satuan.html",
+    "expected": "grafik-trigonometri.html",
+    "missing": false
+  },
+  {
+    "page": "grafik-trigonometri.html",
+    "before": "lingkaran-satuan.html",
+    "expected": "persamaan-trigonometri.html",
+    "missing": false
+  },
+  {
+    "page": "persamaan-trigonometri.html",
+    "before": "lingkaran-satuan.html",
+    "expected": "identitas-trigonometri.html",
+    "missing": false
+  },
+  {
+    "page": "identitas-trigonometri.html",
+    "before": "lingkaran-satuan.html",
+    "expected": "trigonometri-invers.html",
+    "missing": false
+  },
+  {
+    "page": "trigonometri-invers.html",
+    "before": "lingkaran-satuan.html",
+    "expected": "penerapan-trigonometri.html",
+    "missing": false
+  },
+  {
+    "page": "penerapan-trigonometri.html",
+    "before": "lingkaran-satuan.html",
+    "expected": "laju-perubahan.html",
+    "missing": false
+  },
+  {
+    "page": "laju-perubahan.html",
+    "before": "garis.html",
+    "expected": "gagasan-limit.html",
+    "missing": false
+  },
+  {
+    "page": "gagasan-limit.html",
+    "before": "garis.html",
+    "expected": "limit-dasar.html",
+    "missing": false
+  },
+  {
+    "page": "limit-dasar.html",
+    "before": "garis.html",
+    "expected": "kekontinuan.html",
+    "missing": false
+  },
+  {
+    "page": "kekontinuan.html",
+    "before": "garis.html",
+    "expected": "limit-tak-hingga.html",
+    "missing": false
+  },
+  {
+    "page": "limit-tak-hingga.html",
+    "before": "garis.html",
+    "expected": "garis-singgung.html",
+    "missing": false
+  },
+  {
+    "page": "garis-singgung.html",
+    "before": "garis.html",
+    "expected": "kesiapan-kalkulus.html",
+    "missing": false
+  },
+  {
+    "page": "kesiapan-kalkulus.html",
+    "before": "garis.html",
+    "expected": "latihan-lintas-bab.html",
+    "missing": false
+  },
+  {
+    "page": "latihan-lintas-bab.html",
+    "before": null,
+    "expected": "index.html#peta",
+    "missing": true
+  }
+]

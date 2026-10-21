@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "lessons": [
+    {
+      "href": "bilangan.html",
+      "title": "Bilangan dan Garis Bilangan"
+    },
+    {
+      "href": "bilangan-real.html",
+      "title": "Mengenali Bilangan Real"
+    },
+    {
+      "href": "pecahan.html",
+      "title": "Pecahan: Bagian dan Nilai"
+    },
+    {
+      "href": "operasi-pecahan.html",
+      "title": "Menjumlahkan dan Mengurangkan Pecahan"
+    },
+    {
+      "href": "perkalian-pecahan.html",
+      "title": "Perkalian Pecahan: Bagian dari Suatu Bagian"
+    },
+    {
+      "href": "pembagian-pecahan.html",
+      "title": "Pembagian Pecahan: Berapa Kelompok yang Muat?"
+    },
+    {
+      "href": "urutan-operasi.html",
+      "title": "Urutan Operasi dan Tanda Kurung"
+    },
+    {
+      "href": "pangkat-akar.html",
+      "title": "Pangkat dan Akar"
+    },
+    {
+      "href": "index.html#bacaan",
+      "title": "Memahami Tanda Sama Dengan"
+    },
+    {
+      "href": "variabel-ekspresi.html",
+      "title": "Variabel dan Ekspresi Aljabar"
+    },
+    {
+      "href": "distributif.html",
+      "title": "Sifat Distributif dan Penyederhanaan Aljabar"
+    },
+    {
+      "href": "faktorisasi.html",
+      "title": "Faktorisasi: Dari Penjumlahan ke Perkalian"
+    },
+    {
+      "href": "bentuk-akar.html",
+      "title": "Bentuk Akar dan Pangkat Rasional"
+    },
+    {
+      "href": "persamaan-linear.html",
+      "title": "Persamaan Linear Satu Variabel"
+    },
+    {
+      "href": "persamaan-pecahan-akar.html",
+      "title": "Persamaan Pecahan dan Akar"
+    },
+    {
+      "href": "pertidaksamaan-linear.html",
+      "title": "Pertidaksamaan Linear Satu Variabel"
+    },
+    {
+      "href": "pertidaksamaan-majemuk.html",
+      "title": "Pertidaksamaan Majemuk dan Interval"
+    },
+    {
+      "href": "nilai-mutlak.html",
+      "title": "Nilai Mutlak: Persamaan dan Pertidaksamaan"
+    },
+    {
+      "href": "pertidaksamaan-kuadrat.html",
+      "title": "Pertidaksamaan Kuadrat dan Tabel Tanda"
+    },
+    {
+      "href": "koordinat.html",
+      "title": "Koordinat Kartesius"
+    },
+    {
+      "href": "jarak-titik-tengah.html",
+      "title": "Jarak Dua Titik dan Titik Tengah"
+    },
+    {
+      "href": "garis.html",
+      "title": "Kemiringan dan Persamaan Garis"
+    },
+    {
+      "href": "fungsi.html",
+      "title": "Memahami Konsep Fungsi"
+    },
+    {
+      "href": "domain-range.html",
+      "title": "Domain dan Range"
+    },
+    {
+      "href": "fungsi-per-bagian.html",
+      "title": "Fungsi dengan Aturan per Bagian"
+    },
+    {
+      "href": "membaca-grafik.html",
+      "title": "Membaca Grafik Fungsi"
+    },
+    {
+      "href": "komposisi-fungsi.html",
+      "title": "Operasi dan Komposisi Fungsi"
+    },
+    {
+      "href": "fungsi-invers.html",
+      "title": "Memahami Fungsi Invers"
+    },
+    {
+      "href": "transformasi-fungsi.html",
+      "title": "Transformasi Grafik Fungsi"
+    },
+    {
+      "href": "fungsi-kuadrat.html",
+      "title": "Memahami Fungsi Kuadrat"
+    },
+    {
+      "href": "fungsi-polinomial.html",
+      "title": "Memahami Fungsi Polinomial"
+    },
+    {
+      "href": "fungsi-rasional.html",
+      "title": "Memahami Fungsi Rasional"
+    },
+    {
+      "href": "fungsi-eksponensial.html",
+      "title": "Memahami Fungsi Eksponensial"
+    },
+    {
+      "href": "fungsi-logaritma.html",
+      "title": "Memahami Logaritma"
+    },
+    {
+      "href": "persamaan-eksponen-log.html",
+      "title": "Persamaan Eksponensial dan Logaritma"
+    },
+    {
+      "href": "sudut-radian.html",
+      "title": "Sudut dan Radian"
+    },
+    {
+      "href": "lingkaran-satuan.html",
+      "title": "Lingkaran Satuan, Sinus dan Kosinus"
+    },
+    {
+      "href": "tangen.html",
+      "title": "Tangen dan Perbandingan Lainnya"
+    },
+    {
+      "href": "grafik-trigonometri.html",
+      "title": "Grafik Sinus dan Kosinus"
+    },
+    {
+      "href": "persamaan-trigonometri.html",
+      "title": "Persamaan Trigonometri Dasar"
+    },
+    {
+      "href": "identitas-trigonometri.html",
+      "title": "Identitas dan Rumus Trigonometri"
+    },
+    {
+      "href": "trigonometri-invers.html",
+      "title": "Fungsi Trigonometri Invers"
+    },
+    {
+      "href": "penerapan-trigonometri.html",
+      "title": "Penerapan Trigonometri pada Segitiga"
+    },
+    {
+      "href": "laju-perubahan.html",
+      "title": "Laju Perubahan Rata-Rata"
+    },
+    {
+      "href": "gagasan-limit.html",
+      "title": "Memahami Gagasan Limit"
+    },
+    {
+      "href": "limit-dasar.html",
+      "title": "Menghitung Limit Dasar"
+    },
+    {
+      "href": "kekontinuan.html",
+      "title": "Kekontinuan Fungsi"
+    },
+    {
+      "href": "limit-tak-hingga.html",
+      "title": "Limit Tak Hingga dan Perilaku di Tak Hingga"
+    },
+    {
+      "href": "garis-singgung.html",
+      "title": "Dari Garis Sekan ke Garis Singgung"
+    },
+    {
+      "href": "kesiapan-kalkulus.html",
+      "title": "Rangkuman dan Cek Kesiapan Kalkulus"
+    },
+    {
+      "href": "latihan-lintas-bab.html",
+      "title": "Latihan Lintas Bab Prekalkulus"
+    }
+  ],
+  "utilities": [
+    "peta-buku.html",
+    "uji-coba.html"
+  ]
+}
