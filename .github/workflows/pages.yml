@@ -88,6 +88,8 @@ jobs:
         run: node tests/bilangan-real.test.cjs
       - name: Periksa akar dan pangkat rasional
         run: node tests/bentuk-akar.test.cjs
+      - name: Periksa kandidat solusi pecahan dan akar
+        run: node tests/persamaan-pecahan-akar.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
