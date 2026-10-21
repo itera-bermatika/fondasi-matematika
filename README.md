@@ -5,7 +5,7 @@
 - Repositori: https://github.com/itera-bermatika/fondasi-matematika
 
 Bacaan interaktif berbahasa Indonesia untuk membantu mahasiswa membangun
-kembali fondasi matematika. Saat ini tersedia 48 halaman belajar dalam sembilan kelompok materi,
+kembali fondasi matematika. Saat ini tersedia 49 halaman belajar dalam sembilan kelompok materi,
 dengan eksplorasi, latihan, pembahasan, dan MathJax berfont STIX Two.
 
 ## Menjalankan di komputer
@@ -53,7 +53,7 @@ digunakan oleh workflow GitHub Pages dan tidak masuk ke berkas website publik.
 
 ## Uji coba mahasiswa
 
-Panduan dan formulir: [uji-coba.html](https://itera-bermatika.github.io/fondasi-matematika/uji-coba.html). Halaman pendukung ini berada di luar 48 halaman materi.
+Panduan dan formulir: [uji-coba.html](https://itera-bermatika.github.io/fondasi-matematika/uji-coba.html). Halaman pendukung ini berada di luar 49 halaman materi.
 Formulir menyimpan draf di browser dan mengunduh teks; tidak mengumpulkan tanggapan ke server. Jangan memasukkan tanggapan mahasiswa ke repositori publik.
 Panduan pelaksanaan: `dist/panduan-uji-coba.md`; lembar pengamatan: `dist/lembar-pengamatan.csv`.
 

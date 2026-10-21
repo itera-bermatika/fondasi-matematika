@@ -1,0 +1,1 @@
+.branch-status{display:grid;gap:10px;margin-block:20px}.branch-card{border:1px solid var(--line);border-left:5px solid var(--branch-color);padding:12px}.branch-card.active{background:#dfe8d9}.branch-card p{margin:4px 0;font-size:14px}#piecewise-plot{display:block;width:100%;max-width:500px;margin:22px auto;background:#fafaf5;border:1px solid var(--line)}

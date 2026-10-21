@@ -1,0 +1,6 @@
+const assert=require('node:assert/strict');const {examples,evaluate,boundary}=require('../dist/fungsi-per-bagian-core.js');
+for(const q of examples)for(let x=-3;x<=3;x+=.25){const r=evaluate(q,x);if(q.id==='hole'&&x===1){assert.equal(r.status,'outside');continue;}assert.equal(r.status,'defined');assert.equal(r.indices.length,1);const expected=q.id==='absolute'?Math.abs(x):q.id==='jump'?(x<1?x+1:3):q.id==='point'?(x===1?5:x+1):x+1;assert.equal(r.value,expected);assert.ok(250+x*50>=100&&250+x*50<=400);assert.ok(350-r.value*50>=50&&350-r.value*50<=550);}
+assert.equal(evaluate(boundary('correct'),1).value,3);assert.equal(evaluate(boundary('overlap'),1).status,'ambiguous');assert.deepEqual(evaluate(boundary('overlap'),1).values,[2,3]);assert.equal(evaluate(boundary('gap'),1).status,'missing');
+const consistent=boundary('overlap');consistent.branches[1].fn=x=>x+1;assert.equal(evaluate(consistent,1).status,'defined');
+assert.equal(evaluate(examples[1],.75).value,1.75);assert.equal(evaluate(examples[1],1).value,3);assert.equal(evaluate(examples[2],1).value,5);
+console.log('OK: all branch/input combinations, exact boundaries, jumps, isolated values, excluded domain points, missing rules and inconsistent/consistent overlaps.');
