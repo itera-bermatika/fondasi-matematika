@@ -96,6 +96,8 @@ jobs:
         run: node tests/nilai-mutlak.test.cjs
       - name: Periksa pertidaksamaan kuadrat dan tabel tanda
         run: node tests/pertidaksamaan-kuadrat.test.cjs
+      - name: Periksa jarak dua titik dan titik tengah
+        run: node tests/jarak-titik-tengah.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
