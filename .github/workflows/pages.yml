@@ -90,6 +90,8 @@ jobs:
         run: node tests/bentuk-akar.test.cjs
       - name: Periksa kandidat solusi pecahan dan akar
         run: node tests/persamaan-pecahan-akar.test.cjs
+      - name: Periksa operasi interval dan pertidaksamaan majemuk
+        run: node tests/pertidaksamaan-majemuk.test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
