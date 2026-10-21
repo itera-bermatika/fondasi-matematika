@@ -1,0 +1,8 @@
+((root,factory)=>{const api=factory(typeof module==='object'&&module.exports?require('./pertidaksamaan-majemuk-core.js'):root.CompoundLesson);if(typeof module==='object'&&module.exports)module.exports=api;else root.QuadraticInequality=api;})(typeof window==='undefined'?globalThis:window,intervals=>{
+'use strict';
+const cases=[{id:'up',a:1,b:1,c:-2,tex:'(x+2)(x-1)',factors:[-2,1]},{id:'down',a:-1,b:-1,c:2,tex:'-(x+2)(x-1)',factors:[-2,1]},{id:'double',a:1,b:-2,c:1,tex:'(x-1)^2',factors:[1,1]},{id:'double-down',a:-1,b:2,c:-1,tex:'-(x-1)^2',factors:[1,1]},{id:'none',a:1,b:0,c:1,tex:'x^2+1'},{id:'none-down',a:-1,b:0,c:-1,tex:'-(x^2+1)'}];
+const value=(q,x)=>q.a*x*x+q.b*x+q.c;
+function solve(q,relation){if(q.a===0||!['<','<=','>','>='].includes(relation))throw new RangeError('Gunakan kuadrat sejati dan tanda yang sah.');const d=q.b*q.b-4*q.a*q.c,inclusive=relation.includes('='),positive=relation.startsWith('>'),outside=positive===(q.a>0),all=[{lo:-Infinity,hi:Infinity,lc:false,hc:false}];if(d<0)return outside?all:[];const center=-q.b/(2*q.a);if(d===0){if(outside)return inclusive?all:[{lo:-Infinity,hi:center,lc:false,hc:false},{lo:center,hi:Infinity,lc:false,hc:false}];return inclusive?[{lo:center,hi:center,lc:true,hc:true}]:[];}const roots=[(-q.b-Math.sqrt(d))/(2*q.a),(-q.b+Math.sqrt(d))/(2*q.a)].sort((a,b)=>a-b),[lo,hi]=roots;return outside?[{lo:-Infinity,hi:lo,lc:false,hc:inclusive},{lo:hi,hi:Infinity,lc:inclusive,hc:false}]:[{lo,hi,lc:inclusive,hc:inclusive}];}
+function accepts(q,relation,x){const v=value(q,x);return relation==='<'?v<0:relation==='<='?v<=0:relation==='>'?v>0:v>=0;}
+return {cases,value,solve,accepts,contains:intervals.contains,intervalTex:intervals.intervalTex};
+});
