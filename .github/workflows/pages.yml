@@ -30,6 +30,8 @@ jobs:
         run: python3 tests/navigation.test.py
       - name: Periksa berkas website
         run: python3 scripts/check-site.py
+      - name: Periksa pengayaan konteks 18 bab buku
+        run: node --test tests/pengayaan-buku.test.cjs
       - name: Periksa perhitungan aktivitas persamaan
         run: node tests/persamaan-linear.test.cjs
       - name: Periksa bidang koordinat
