@@ -80,3 +80,9 @@ Header seluruh halaman memakai identitas ITERA BERMATIKA, judul bahasan pada bar
 Seluruh halaman memakai footer bersama: nama dan institusi, identitas Bacaan Prekalkulus, lalu Kirim koreksi ke issues repositori ini. Pola mengikuti footer Grup/Ring tanpa menyalin nomor versi atau nama jilidnya. Dua tautan sumber pendamping pada beranda tetap tersedia sebelum footer.
 
 Navigasi akhir memakai label kecil Sebelumnya/Selanjutnya dan judul tujuan, dengan garis pemisah seperti Grup/Ring. Blok ini selalu menjadi elemen terakhir artikel, setelah konteks buku dan tautan tambahan. Pada layar sampai 400 piksel kedua tujuan disusun vertikal. Halaman pendukung memakai Kembali ke peta dan Mulai membaca. Aturan dibuat oleh `scripts/sync-navigation.py` dan diperiksa bersama pengujian navigasi.
+
+## Kelengkapan penutup setiap materi
+
+Seluruh 51 halaman materi mempunyai tepat satu blok `.reading-completion`, diikuti navigasi akhir sebagai anak langsung artikel utama. Sebelas materi tambahan memakai `dist/reading-completion.js` dengan kunci penyimpanan terpisah per halaman; 40 materi lama tetap memakai pengendali dan kunci penyimpanan sebelumnya. Halaman pendukung tidak diberi penanda selesai materi.
+
+Generator membaca pasangan tag artikel secara seimbang, termasuk kartu contoh berbentuk artikel bersarang. Jangan mencari batas artikel dengan pola yang berhenti pada penutup artikel pertama. Pengujian mencegah navigasi masuk ke kartu contoh, memeriksa kelengkapan tombol pada seluruh materi, dan memeriksa pemulihan status selesai serta kegagalan penyimpanan browser.

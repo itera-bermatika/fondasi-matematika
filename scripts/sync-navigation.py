@@ -3,6 +3,7 @@ import argparse
 import json
 import re
 from html import escape, unescape
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -85,7 +86,77 @@ def render_header(source, page, next_lesson, utility):
     return source[:match.start()] + header + source[match.end():]
 
 
+class ArticleBounds(HTMLParser):
+    """Track balanced article tags; examples can contain nested articles."""
+    def __init__(self, source):
+        super().__init__(convert_charrefs=False)
+        self.lines = [0]
+        for match in re.finditer('\\n', source):
+            self.lines.append(match.end())
+        self.stack, self.ranges = [], []
+        self.feed(source)
+        if self.stack:
+            raise ValueError('Unclosed article tag')
+
+    def position(self):
+        line, column = self.getpos()
+        return self.lines[line - 1] + column
+
+    def handle_starttag(self, tag, attributes):
+        if tag == 'article':
+            start = self.position()
+            self.stack.append((start, start + len(self.get_starttag_text()), dict(attributes)))
+
+    def handle_endtag(self, tag):
+        if tag == 'article':
+            if not self.stack:
+                raise ValueError('Unmatched article end tag')
+            start, content_start, attributes = self.stack.pop()
+            self.ranges.append((start, content_start, self.position(), self.position() + len('</article>'), attributes))
+
+
+def reading_article(source):
+    ranges = ArticleBounds(source).ranges
+    if not ranges:
+        raise ValueError('Missing reading article')
+    # The main reading article contains all example articles, regardless of IDs.
+    return min(ranges, key=lambda item: item[0])
+
+
 def render_bottom(source, page, previous, following, utility=False):
+    generated = re.compile(re.escape(START) + r'[\s\S]*?' + re.escape(END))
+    if source.count(START) > 1 or source.count(START) != source.count(END):
+        raise ValueError(page + ': expected at most one balanced reading navigation block')
+    source = generated.sub('', source)
+    # Remove only our generated completion wrapper, preserving existing controls/IDs.
+    source = re.sub(r'<div class="reading-completion">([\s\S]*?)</div>', r'\1', source)
+    _, start, end, _, _ = reading_article(source)
+    body = source[start:end]
+    contexts = re.findall(r'<div class="book-context"[^>]*>[\s\S]*?</div>', body)
+    body = re.sub(r'<div class="book-context"[^>]*>[\s\S]*?</div>', '', body)
+    body = ANCHOR.sub(lambda m: '' if 'back-link' in attrs(m.group()).get('class', '').split()
+                      and normalized(attrs(m.group()).get('href', ''), page) == 'index.html#peta'
+                      else m.group(), body)
+    body = re.sub(r'(?:<p>)?<a href="index.html#peta">(?:← )?Kembali ke peta belajar(?: →)?</a>(?:</p>)?$', '', body)
+    completion = ''
+    if not utility:
+        buttons = list(re.finditer(r'<button\b[^>]*\bid="(?:number-)?complete"[^>]*>[\s\S]*?</button>', body))
+        if len(buttons) > 1:
+            raise ValueError(page + ': multiple reading completion controls')
+        if buttons:
+            button = buttons[0].group()
+            body = body[:buttons[0].start()] + body[buttons[0].end():]
+            note = re.search(r'<p\b[^>]*\bid="(?:number-)?complete-note"[^>]*>[\s\S]*?</p>', body)
+            if not note:
+                raise ValueError(page + ': missing completion status')
+            status = note.group()
+            body = body[:note.start()] + body[note.end():]
+        else:
+            key = 'fondasi-reading-' + page.removesuffix('.html') + '-complete'
+            button = ('<button id="complete" class="button" type="button" data-reading-complete '
+                      'data-storage-key="' + key + '" aria-pressed="false">Tandai bacaan selesai ✓</button>')
+            status = '<p id="complete-note" role="status"></p>'
+        completion = '<div class="reading-completion">' + button + status + '</div>'
     previous_href = previous['href'] if previous else 'index.html#beranda'
     following_href = following['href'] if following else 'index.html#peta'
     previous_label = '← ' + previous['title'] if previous else '← Beranda Prekalkulus'
@@ -103,41 +174,7 @@ def render_bottom(source, page, previous, following, utility=False):
              + escape(previous_label) + '</a>'
              f'<a data-reading-next href="{escape(following_href, quote=True)}"><small>{following_caption}</small>'
              + escape(following_label) + '</a></nav>' + END)
-    generated = re.compile(re.escape(START) + r'[\s\S]*?' + re.escape(END))
-    if START in source:
-        if len(generated.findall(source)) != 1:
-            raise ValueError(page + ': expected exactly one reading navigation block')
-        source = generated.sub('', source)
-        # Put the final navigation after all reading content, including context links.
-        article = re.search(r'<article\b[\s\S]*?</article>', source)
-        if not article:
-            raise ValueError(page + ': missing reading article')
-        body = article.group()
-        body = ANCHOR.sub(lambda m: '' if 'back-link' in attrs(m.group()).get('class', '').split()
-                          and normalized(attrs(m.group()).get('href', ''), page) == 'index.html#peta'
-                          else m.group(), body)
-        body = re.sub(r'(?:<p>)?<a href="index.html#peta">(?:← )?Kembali ke peta belajar(?: →)?</a>(?:</p>)?(?=</article>)', '', body)
-        body = body.replace('</article>', block + '</article>')
-        return source[:article.start()] + body + source[article.end():]
-    if utility:
-        return source.replace('</article>', block + '</article>', 1)
-    old = []
-    for m in ANCHOR.finditer(source):
-        a = attrs(m.group())
-        if 'back-link' not in a.get('class', '').split():
-            continue
-        target = normalized(a.get('href', ''), page)
-        text = unescape(re.sub('<[^>]+>', '', m.group()))
-        if target in (previous_href, following_href) or any(t in text for t in ('Lanjut:', 'Selanjutnya:', '← Kembali:')):
-            old.append(m)
-    if not old:
-        raise ValueError(page + ': no existing bottom links to replace')
-    result = source[:old[0].start()] + block
-    cursor = old[0].end()
-    for m in old[1:]:
-        result += source[cursor:m.start()]
-        cursor = m.end()
-    return result + source[cursor:]
+    return source[:start] + body + ''.join(contexts) + completion + block + source[end:]
 
 
 def render_footer(source, page):
@@ -198,8 +235,11 @@ def render(source, page, previous, following, utility=False):
     source = render_header(source, page, following, utility)
     source = render_bottom(source, page, previous, following, utility)
     source = render_footer(source, page)
+    source = re.sub(r'<script defer src="reading-completion.js(?:\?[^"]*)?"></script>', '', source)
+    if not utility and 'data-reading-complete' in source:
+        source = source.replace('</head>', '<script defer src="reading-completion.js?v=20261023"></script></head>')
     source = re.sub(r'<link rel="stylesheet" href="navigation.css(?:\?[^"]*)?">', '', source)
-    css = '<link rel="stylesheet" href="navigation.css?v=20261023-footer">'
+    css = '<link rel="stylesheet" href="navigation.css?v=20261023-completion">'
     if css not in source:
         source = source.replace('</head>', css + '</head>')
     return source

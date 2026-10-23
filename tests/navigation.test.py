@@ -1,6 +1,7 @@
 """Exercise the actual navigation checker against isolated, broken copies."""
 import shutil
 import re
+import json
 import subprocess
 import sys
 import tempfile
@@ -8,6 +9,9 @@ import unittest
 from pathlib import Path
 
 SOURCE = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SOURCE / 'scripts'))
+from importlib import import_module
+navigation = import_module('sync-navigation')
 
 
 class NavigationChecks(unittest.TestCase):
@@ -60,7 +64,7 @@ class NavigationChecks(unittest.TestCase):
     def test_context_link_cannot_become_a_second_sidebar(self):
         self.replace('dist/variabel-ekspresi.html',
                      '<div class="book-context" aria-label="Konteks buku">', '<aside class="wrap">')
-        self.replace('dist/variabel-ekspresi.html', '</p></div><!-- reading-order:start -->', '</p></aside><!-- reading-order:start -->')
+        self.replace('dist/variabel-ekspresi.html', '</p></div><div class="reading-completion">', '</p></aside><div class="reading-completion">')
         self.assertNotEqual(self.check().returncode, 0)
 
     def test_footers_and_final_navigation_share_one_pattern(self):
@@ -72,11 +76,42 @@ class NavigationChecks(unittest.TestCase):
                 self.assertEqual(source.count('class="reading-navigation chapter-nav"'), 1)
                 self.assertIn('<!-- reading-order:end --></article>', source)
                 self.assertIn('<small>', source)
+                outer = navigation.reading_article(source)
+                nav_position = source.index('<!-- reading-order:start -->')
+                self.assertTrue(outer[1] < nav_position < outer[2])
+                for child in navigation.ArticleBounds(source).ranges:
+                    if child != outer:
+                        self.assertFalse(child[0] < nav_position < child[3], 'Navigation inside example article')
         self.assertEqual(len(footers), 1)
         self.assertIn('Tri Utomo · Institut Teknologi Sumatera', next(iter(footers)))
 
     def test_footer_cannot_silently_drift(self):
         self.replace('dist/koordinat.html', 'Bacaan Prekalkulus · ITERA Bermatika', 'Footer lama')
+        self.assertNotEqual(self.check().returncode, 0)
+
+    def test_every_lesson_has_one_completion_before_final_navigation(self):
+        data = json.loads((SOURCE / 'reading-order.json').read_text(encoding='utf-8'))
+        for lesson in data['lessons']:
+            page = lesson['href'].split('#')[0]
+            source = (SOURCE / 'dist' / page).read_text(encoding='utf-8')
+            with self.subTest(page=page):
+                self.assertEqual(source.count('class="reading-completion"'), 1)
+                self.assertEqual(len(re.findall(r'<button[^>]*id="(?:number-)?complete"', source)), 1)
+                self.assertIn('</div><!-- reading-order:start -->', source)
+                if 'data-reading-complete' in source:
+                    self.assertIn('reading-completion.js?v=', source)
+        for page in data['utilities']:
+            self.assertNotIn('class="reading-completion"', (SOURCE / 'dist' / page).read_text(encoding='utf-8'))
+
+    def test_nested_example_cannot_capture_the_final_navigation(self):
+        path = self.root / 'dist/pertidaksamaan-linear.html'
+        source = path.read_text(encoding='utf-8')
+        pattern = r'<!-- reading-order:start -->[\s\S]*?<!-- reading-order:end -->'
+        block = re.search(pattern, source).group()
+        source = re.sub(pattern, '', source)
+        nested = sorted(navigation.ArticleBounds(source).ranges, key=lambda item: item[0])[1]
+        source = source[:nested[2]] + block + source[nested[2]:]
+        path.write_text(source, encoding='utf-8')
         self.assertNotEqual(self.check().returncode, 0)
 
     def test_header_cannot_silently_point_to_a_prerequisite(self):

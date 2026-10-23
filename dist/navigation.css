@@ -29,3 +29,7 @@ footer.site-footer>a:hover{text-decoration:underline}
 .site-resources a{min-height:44px;display:inline-flex;align-items:center}
 @media(max-width:720px){footer.site-footer{padding:25px 22px;flex-direction:column;align-items:flex-start;gap:7px}.reading-navigation.chapter-nav a{font-size:17px}.site-resources{padding-inline:22px}}
 @media(max-width:400px){.reading-navigation.chapter-nav{grid-template-columns:1fr;gap:20px}.reading-navigation.chapter-nav a:last-child{text-align:left}}
+.reading-completion{margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+.reading-completion>button{min-height:48px;max-width:100%;white-space:normal}
+.reading-completion>p{font-size:13px;line-height:1.7;margin:12px 0 0}
+.reading-completion>p:empty{display:none}
