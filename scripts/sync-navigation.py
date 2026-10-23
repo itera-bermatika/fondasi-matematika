@@ -123,6 +123,32 @@ def reading_article(source):
     return min(ranges, key=lambda item: item[0])
 
 
+def book_context(page):
+    if page == 'latihan-lintas-bab.html':
+        links = ['<a href="pengayaan-buku.html">Coba konteks buku per bab →</a>']
+    else:
+        links = ['<a href="pengayaan-buku.html#bab-' + str(chapter['id']) + '">Coba konteks buku bab '
+                 + str(chapter['id']) + ': ' + escape(chapter['title']) + ' →</a>'
+                 for chapter in BOOK_CHAPTERS if any(urlsplit(href).path == page for href in chapter['hrefs'])]
+    if not links:
+        raise ValueError(page + ': missing book integration')
+    return '<div class="book-context" aria-label="Konteks buku"><p>' + '<br>'.join(links) + '</p></div>'
+
+
+def render_book_links(source):
+    for chapter in BOOK_CHAPTERS:
+        pattern = r'(<section class="book-card" id="bab-' + str(chapter['id']) + r'"[\s\S]*?)(<p(?: class="related-readings")?><a href="[^"]+">(?:Baca konsepnya|Bacaan terkait)[\s\S]*?</p>)'
+        links = ['<a href="' + escape(href, quote=True) + '">' + escape(LESSON_TITLES.get(href, LESSON_TITLES.get(urlsplit(href).path, href))) + '</a>' for href in chapter['hrefs']]
+        related = '<p class="related-readings"><strong>Bacaan terkait:</strong> ' + ' · '.join(links) + ' · <a href="peta-buku.html#bab-' + str(chapter['id']) + '">Peta bab</a></p>'
+        # First migration has a single "Baca konsepnya" link; later runs replace our shared block.
+        managed = re.compile(r'(<section class="book-card" id="bab-' + str(chapter['id']) + r'"[\s\S]*?)(<p class="related-readings">[\s\S]*?</p>)')
+        matcher = managed if managed.search(source) else re.compile(pattern)
+        source, count = matcher.subn(lambda m: m[1] + related, source, count=1)
+        if count != 1:
+            raise ValueError('Missing related readings for chapter ' + str(chapter['id']))
+    return source
+
+
 def render_bottom(source, page, previous, following, utility=False):
     generated = re.compile(re.escape(START) + r'[\s\S]*?' + re.escape(END))
     if source.count(START) > 1 or source.count(START) != source.count(END):
@@ -134,6 +160,8 @@ def render_bottom(source, page, previous, following, utility=False):
     body = source[start:end]
     contexts = re.findall(r'<div class="book-context"[^>]*>[\s\S]*?</div>', body)
     body = re.sub(r'<div class="book-context"[^>]*>[\s\S]*?</div>', '', body)
+    if not utility:
+        contexts = [book_context(page)]
     body = ANCHOR.sub(lambda m: '' if 'back-link' in attrs(m.group()).get('class', '').split()
                       and normalized(attrs(m.group()).get('href', ''), page) == 'index.html#peta'
                       else m.group(), body)
@@ -231,6 +259,8 @@ def render_layout(source, page):
 
 
 def render(source, page, previous, following, utility=False):
+    if page == 'pengayaan-buku.html':
+        source = render_book_links(source)
     source = render_layout(source, page)
     source = render_header(source, page, following, utility)
     source = render_bottom(source, page, previous, following, utility)
@@ -251,8 +281,17 @@ def main():
     args = parser.parse_args()
     data = json.loads((ROOT / 'reading-order.json').read_text(encoding='utf-8'))
     lessons = data['lessons']
-    global FIRST
+    global FIRST, BOOK_CHAPTERS, LESSON_TITLES
     FIRST = lessons[0]
+    LESSON_TITLES = {lesson['href']: lesson['title'] for lesson in lessons}
+    peta = (DIST / 'peta-buku.html').read_text(encoding='utf-8')
+    BOOK_CHAPTERS = []
+    for match in re.finditer(r'<section class="chapter-card" id="bab-(\d+)">([\s\S]*?)</section>', peta):
+        title = unescape(re.sub('<[^>]+>', '', re.search(r'<h3>([\s\S]*?)</h3>', match[2])[1]))
+        hrefs = re.findall(r'href="([^"]+)"', re.search(r'<ul>([\s\S]*?)</ul>', match[2])[1])
+        BOOK_CHAPTERS.append({'id': int(match[1]), 'title': title, 'hrefs': hrefs})
+    if [chapter['id'] for chapter in BOOK_CHAPTERS] != list(range(1, 19)):
+        raise ValueError('Book map must contain chapters 1–18 in order')
     hrefs = [lesson['href'] for lesson in lessons]
     pages = [urlsplit(href).path for href in hrefs]
     if len(set(hrefs)) != len(hrefs) or len(set(pages)) != len(pages):

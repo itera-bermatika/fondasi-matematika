@@ -86,3 +86,9 @@ Navigasi akhir memakai label kecil Sebelumnya/Selanjutnya dan judul tujuan, deng
 Seluruh 51 halaman materi mempunyai tepat satu blok `.reading-completion`, diikuti navigasi akhir sebagai anak langsung artikel utama. Sebelas materi tambahan memakai `dist/reading-completion.js` dengan kunci penyimpanan terpisah per halaman; 40 materi lama tetap memakai pengendali dan kunci penyimpanan sebelumnya. Halaman pendukung tidak diberi penanda selesai materi.
 
 Generator membaca pasangan tag artikel secara seimbang, termasuk kartu contoh berbentuk artikel bersarang. Jangan mencari batas artikel dengan pola yang berhenti pada penutup artikel pertama. Pengujian mencegah navigasi masuk ke kartu contoh, memeriksa kelengkapan tombol pada seluruh materi, dan memeriksa pemulihan status selesai serta kegagalan penyimpanan browser.
+
+## Integrasi pengayaan dan MathJax
+
+Daftar bacaan pada setiap bab di `dist/peta-buku.html` menjadi acuan tautan dua arah: generator menampilkan seluruh bacaan terkait di Pengayaan Buku dan kotak pengayaan bab terkait pada setiap bacaan. Operasi pecahan disertakan pada Bab 2. Latihan Lintas Bab menautkan pengayaan umum karena mencakup beberapa bab. Setelah mengubah pemetaan, jalankan generator dan pemeriksa navigasi agar kedua arah diperbarui bersama.
+
+`pengayaan-buku.html` memakai MathJax lokal yang sama dengan bacaan lain. Notasi eksplisit pada konteks, label, pertanyaan, penjelasan dan refleksi disimpan sebagai `data-tex` dalam data bab. Nilai penggeser, hasil, dan tabel dibuat ulang sebagai notasi MathJax saat interaksi. `formatNumberTex` membedakan koma desimal Indonesia dari spasi pemisah ribuan untuk TeX; kolom prediksi tetap menerima angka biasa dengan koma atau titik desimal. Perhitungan dan kunci refleksi tetap dipertahankan.

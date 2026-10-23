@@ -55,7 +55,24 @@ class NavigationChecks(unittest.TestCase):
                 self.assertIn('aria-label="Isi bacaan"', source)
                 self.assertNotIn('<aside class="wrap">', source)
                 for context in re.findall(r'<div class="book-context"[\s\S]*?</div>', source):
-                    self.assertIn('pengayaan-buku.html#bab-', context)
+                    self.assertIn('pengayaan-buku.html', context)
+
+    def test_book_integration_is_bidirectional_for_all_chapters(self):
+        peta = (SOURCE / 'dist/peta-buku.html').read_text(encoding='utf-8')
+        enrichment = (SOURCE / 'dist/pengayaan-buku.html').read_text(encoding='utf-8')
+        for chapter in re.finditer(r'<section class="chapter-card" id="bab-(\d+)">([\s\S]*?)</section>', peta):
+            number = chapter[1]
+            hrefs = re.findall(r'href="([^"]+)"', re.search(r'<ul>([\s\S]*?)</ul>', chapter[2])[1])
+            related = re.search(r'id="bab-' + number + r'"[\s\S]*?<p class="related-readings">([\s\S]*?)</p>', enrichment)[1]
+            for href in hrefs:
+                with self.subTest(chapter=number, lesson=href):
+                    self.assertIn('href="' + href + '"', related)
+                    page = (SOURCE / 'dist' / href.split('#')[0]).read_text(encoding='utf-8')
+                    context = re.search(r'<div class="book-context"[\s\S]*?</div>', page).group()
+                    self.assertIn('pengayaan-buku.html#bab-' + number + '"', context)
+        for lesson in json.loads((SOURCE / 'reading-order.json').read_text(encoding='utf-8'))['lessons']:
+            page = (SOURCE / 'dist' / lesson['href'].split('#')[0]).read_text(encoding='utf-8')
+            self.assertEqual(page.count('class="book-context"'), 1)
 
     def test_header_identity_cannot_drift(self):
         self.replace('dist/bilangan-real.html', 'ITERA BERMATIKA<small>', 'Fondasi<small>')

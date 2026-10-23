@@ -1,6 +1,15 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const {chapters,evaluate}=require('../dist/pengayaan-buku-core.js');
+const {chapters,evaluate,formatNumberTex}=require('../dist/pengayaan-buku-core.js');
+
+test('Indonesian decimals and thousands produce valid unambiguous TeX numbers',()=>{
+ assert.equal(formatNumberTex(29000),'29\\,000');
+ assert.equal(formatNumberTex(207.36),'207{,}36');
+ assert.equal(formatNumberTex(12000.5),'12\\,000{,}5');
+ assert.equal(formatNumberTex(-0.01),'-0{,}01');
+ assert.equal(formatNumberTex(1e-14),'0');
+ assert.throws(()=>formatNumberTex(Infinity),RangeError);
+});
 test('all 18 contextual calculations agree with independently calculated examples',()=>{
  const examples=[[1,4,18],[2,20.1,.1],[3,4,28],[4,2,36],[5,24,8],[6,29000,5],[7,6,5],[8,3,21000],[9,10,30],[10,120,12],[11,18,4],[12,6,36],[13,2,256],[14,4,207.36],[15,2,3],[16,4,0],[17,3.9,7.9],[18,.1,.81]];
  assert.equal(chapters.length,18);
