@@ -68,3 +68,9 @@ Latihan penghubung: `dist/latihan-lintas-bab.html` (12 soal, empat paket). Tinja
 Tombol kanan atas pada bacaan selalu menuju bacaan berikutnya, sesuai tautan bawah. Judul tujuan tersedia pada label aksesibilitas dan tooltip. Beranda dan halaman pendukung memulai dari bacaan pertama; saat beranda menampilkan bacaan kesetaraan, tombol berubah mengikuti posisi bacaan itu. Halaman latihan terakhir kembali ke peta belajar. Halaman pendukung dideklarasikan terpisah dan tidak menambah urutan materi.
 
 Menu peta tetap terlihat pada ponsel, dengan label ringkas “Peta”. Prasyarat dan bacaan tambahan tetap ditautkan pada isi bacaan, bukan dijadikan tujuan tombol Lanjut.
+
+## Keseragaman tampilan
+
+Header seluruh halaman memakai identitas ITERA BERMATIKA, judul bahasan pada baris kedua, ikon P dengan bentuk yang sama dengan bacaan Grup/Ring, dan tautan Beranda ITERA ke landing page organisasi. Menu Peta belajar tetap terlihat pada ponsel.
+
+`python scripts/sync-navigation.py` juga melengkapi kerangka dua kolom dan daftar isi bagi halaman tambahan yang belum mempunyai menu samping. Pada ponsel daftar isi menjadi deretan tautan yang dapat digeser. Tautan konteks buku harus berada dalam `.book-context` di dalam artikel, bukan `<aside class="wrap">` yang menjadi kolom ketiga dan ikut melekat saat menggulir. Aturan tampilan bersama berada di `dist/navigation.css`; halaman cukup memuat satu salinan stylesheet ini. Detail audit: `docs/AUDIT-TAMPILAN-2026-10-23.md`.

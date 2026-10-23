@@ -1,1 +1,17 @@
 .reading-navigation{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin:30px 0 20px}.reading-navigation .back-link{display:flex;align-items:center;margin:0;padding:14px;border:1px solid var(--line);border-radius:4px;min-height:48px;line-height:1.6;overflow-wrap:anywhere}.reading-navigation [data-reading-next]{background:var(--pale)}header .nav-cta{white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}header .nav-map{min-height:44px;display:inline-flex;align-items:center;gap:3px}@media(max-width:640px){.reading-navigation{grid-template-columns:1fr}header{padding-inline:14px;gap:8px}header .brand{font-size:16px;gap:6px;white-space:nowrap}header .mark{width:30px;height:36px;font-size:25px}header .brand-small{left:36px;top:28px;font-size:7px}header nav{gap:6px;flex-shrink:0}header nav>a.nav-map{display:inline-flex;align-items:center;padding:6px;font-size:12px}header .nav-map-long{display:none}header .nav-cta{font-size:12px;padding:8px 10px}}
+/* Shared identity and reading shell: keep content and side navigation in separate columns. */
+header{height:auto;min-height:100px;gap:24px;padding-block:20px}
+header .brand{gap:13px;min-width:0;font:700 10px/1.5 Arial,Helvetica,sans-serif;letter-spacing:1.4px}
+header .brand-mark{flex:0 0 48px;width:48px;height:48px;display:grid;place-items:center;border-radius:50% 50% 4px 50%;background:var(--ink);color:var(--paper);font:36px Georgia,serif;letter-spacing:0}
+header .brand-copy{min-width:0;max-width:440px}
+header .brand small{display:block;font:17px/1.3 Georgia,serif;letter-spacing:0;margin-top:4px;overflow-wrap:anywhere}
+header nav{flex-shrink:0;gap:20px}
+header .nav-home{min-height:44px;display:inline-flex;align-items:center;white-space:nowrap}
+.reader-wrap>article{min-width:0;width:100%}
+.reader-wrap>aside{min-width:0;max-height:calc(100vh - 50px);overflow-y:auto;padding-right:6px}
+.shared-reader .alignment,.shared-reader .book-enrichment,.shared-reader .pilot{max-width:none;padding:0}
+.book-context{position:static;clear:both;margin:30px 0;padding:20px;border:1px solid var(--line);border-left:3px solid var(--green);background:var(--pale);border-radius:4px}
+.book-context p{margin:0}
+.book-context a{display:inline-block;padding-block:8px}
+@media(max-width:850px){header{flex-wrap:wrap;gap:12px;padding-inline:25px}header nav{width:100%;justify-content:flex-end;flex-wrap:wrap}header .brand-copy{max-width:none}}
+@media(max-width:640px){header{padding:16px 20px;gap:12px}header .brand{font-size:10px;gap:12px;white-space:normal}header .brand-mark{flex-basis:40px;width:40px;height:40px;font-size:29px}header .brand small{font-size:17px}header nav{justify-content:space-between;gap:10px}header nav>a.nav-home{display:inline-flex;font-size:12px}header .nav-map-long{display:inline}header .nav-map{gap:3px}.reader-wrap>aside{max-height:none;overflow:visible;padding-right:0}.reader-wrap>aside nav{max-width:100%}.book-context{padding:16px}.shared-reader .book-enrichment{padding-inline:0}}

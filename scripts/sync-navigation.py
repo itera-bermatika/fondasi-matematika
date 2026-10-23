@@ -74,7 +74,14 @@ def render_header(source, page, next_lesson, utility):
     map_link = ('<a class="nav-map" href="index.html#peta" aria-label="Peta belajar">'
                 'Peta<span class="nav-map-long"> belajar</span></a>')
     nav = nav[:m.start()] + map_link + nav[m.end():]
-    header = header[:nav_match.start()] + nav + header[nav_match.end():]
+    nav = re.sub(r'<a class="nav-home"[\s\S]*?</a>', '', nav)
+    nav = nav.replace('</nav>', '<a class="nav-home" href="https://itera-bermatika.github.io/">Beranda ITERA</a></nav>')
+    title = unescape(re.sub('<[^>]+>', '', re.search(r'<title>(.*?)</title>', source).group(1))).split(' — ')[0]
+    if page == 'index.html':
+        title = 'Bacaan Prekalkulus'
+    brand = ('<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">P</span>'
+             '<span class="brand-copy">ITERA BERMATIKA<small>' + escape(title) + '</small></span></a>')
+    header = '<header>' + brand + nav + '</header>'
     return source[:match.start()] + header + source[match.end():]
 
 
@@ -112,11 +119,49 @@ def render_bottom(source, page, previous, following):
     return result + source[cursor:]
 
 
+def render_layout(source, page):
+    # A context link is content, not a second sticky grid sidebar.
+    contexts = re.findall(r'<aside class="wrap">([\s\S]*?)</aside>', source)
+    source = re.sub(r'<aside class="wrap">[\s\S]*?</aside>', '', source)
+    if contexts:
+        context = '<div class="book-context" aria-label="Konteks buku">' + ''.join(contexts) + '</div>'
+        close = '</article>' if '</article>' in source else '</main>'
+        source = source.replace(close, context + close, 1)
+    if page == 'index.html' or '<aside' in source:
+        return source
+    main = re.search(r'<main\b([^>]*)>([\s\S]*?)</main>', source)
+    if not main:
+        raise ValueError(page + ': missing main content')
+    body = main.group(2)
+    links = []
+    def heading(match):
+        attributes, content = match.groups()
+        found = re.search(r'\bid="([^"]+)"', attributes)
+        target = found.group(1) if found else 'bagian-' + str(len(links) + 1)
+        if not found:
+            attributes += ' id="' + target + '"'
+        label = unescape(re.sub('<[^>]+>', '', content)).strip()
+        links.append('<a href="#' + target + '">' + escape(label) + '</a>')
+        return '<h2' + attributes + '>' + content + '</h2>'
+    body = re.sub(r'<h2([^>]*)>([\s\S]*?)</h2>', heading, body)
+    if page == 'latihan-lintas-bab.html':
+        links = ['<a href="#paket-' + key + '">Paket ' + key.upper() + '</a>' for key in 'abcd'] + links
+    classes = re.search(r'\bclass="([^"]*)"', main.group(1))
+    classes = ' '.join(c for c in (classes.group(1).split() if classes else []) if c != 'wrap')
+    sidebar = ('<aside class="reading-sidebar"><a class="text-link" href="index.html#peta">← Kembali ke peta belajar</a>'
+               '<p class="eyebrow">PREKALKULUS</p><h3>Dalam bacaan ini</h3>'
+               '<nav aria-label="Isi bacaan">' + ''.join(links) + '</nav></aside>')
+    replacement = '<main class="reader-wrap shared-reader">' + sidebar + '<article id="isi" class="' + classes + '">' + body + '</article></main>'
+    return source[:main.start()] + replacement + source[main.end():]
+
+
 def render(source, page, previous, following, utility=False):
+    source = render_layout(source, page)
     source = render_header(source, page, following, utility)
     if not utility:
         source = render_bottom(source, page, previous, following)
-    css = '<link rel="stylesheet" href="navigation.css?v=20261021-order">'
+    source = re.sub(r'<link rel="stylesheet" href="navigation.css(?:\?[^"]*)?">', '', source)
+    css = '<link rel="stylesheet" href="navigation.css?v=20261023-layout">'
     if css not in source:
         source = source.replace('</head>', css + '</head>')
     return source
