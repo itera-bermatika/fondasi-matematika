@@ -60,7 +60,23 @@ class NavigationChecks(unittest.TestCase):
     def test_context_link_cannot_become_a_second_sidebar(self):
         self.replace('dist/variabel-ekspresi.html',
                      '<div class="book-context" aria-label="Konteks buku">', '<aside class="wrap">')
-        self.replace('dist/variabel-ekspresi.html', '</p></div></article>', '</p></aside></article>')
+        self.replace('dist/variabel-ekspresi.html', '</p></div><!-- reading-order:start -->', '</p></aside><!-- reading-order:start -->')
+        self.assertNotEqual(self.check().returncode, 0)
+
+    def test_footers_and_final_navigation_share_one_pattern(self):
+        footers = set()
+        for path in (SOURCE / 'dist').glob('*.html'):
+            source = path.read_text(encoding='utf-8')
+            with self.subTest(page=path.name):
+                footers.add(re.search(r'<footer\b[\s\S]*?</footer>', source).group())
+                self.assertEqual(source.count('class="reading-navigation chapter-nav"'), 1)
+                self.assertIn('<!-- reading-order:end --></article>', source)
+                self.assertIn('<small>', source)
+        self.assertEqual(len(footers), 1)
+        self.assertIn('Tri Utomo · Institut Teknologi Sumatera', next(iter(footers)))
+
+    def test_footer_cannot_silently_drift(self):
+        self.replace('dist/koordinat.html', 'Bacaan Prekalkulus · ITERA Bermatika', 'Footer lama')
         self.assertNotEqual(self.check().returncode, 0)
 
     def test_header_cannot_silently_point_to_a_prerequisite(self):

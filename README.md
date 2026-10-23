@@ -74,3 +74,9 @@ Menu peta tetap terlihat pada ponsel, dengan label ringkas “Peta”. Prasyarat
 Header seluruh halaman memakai identitas ITERA BERMATIKA, judul bahasan pada baris kedua, ikon P dengan bentuk yang sama dengan bacaan Grup/Ring, dan tautan Beranda ITERA ke landing page organisasi. Menu Peta belajar tetap terlihat pada ponsel.
 
 `python scripts/sync-navigation.py` juga melengkapi kerangka dua kolom dan daftar isi bagi halaman tambahan yang belum mempunyai menu samping. Pada ponsel daftar isi menjadi deretan tautan yang dapat digeser. Tautan konteks buku harus berada dalam `.book-context` di dalam artikel, bukan `<aside class="wrap">` yang menjadi kolom ketiga dan ikut melekat saat menggulir. Aturan tampilan bersama berada di `dist/navigation.css`; halaman cukup memuat satu salinan stylesheet ini. Detail audit: `docs/AUDIT-TAMPILAN-2026-10-23.md`.
+
+## Footer dan penutup bacaan
+
+Seluruh halaman memakai footer bersama: nama dan institusi, identitas Bacaan Prekalkulus, lalu Kirim koreksi ke issues repositori ini. Pola mengikuti footer Grup/Ring tanpa menyalin nomor versi atau nama jilidnya. Dua tautan sumber pendamping pada beranda tetap tersedia sebelum footer.
+
+Navigasi akhir memakai label kecil Sebelumnya/Selanjutnya dan judul tujuan, dengan garis pemisah seperti Grup/Ring. Blok ini selalu menjadi elemen terakhir artikel, setelah konteks buku dan tautan tambahan. Pada layar sampai 400 piksel kedua tujuan disusun vertikal. Halaman pendukung memakai Kembali ke peta dan Mulai membaca. Aturan dibuat oleh `scripts/sync-navigation.py` dan diperiksa bersama pengujian navigasi.

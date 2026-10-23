@@ -85,21 +85,42 @@ def render_header(source, page, next_lesson, utility):
     return source[:match.start()] + header + source[match.end():]
 
 
-def render_bottom(source, page, previous, following):
+def render_bottom(source, page, previous, following, utility=False):
     previous_href = previous['href'] if previous else 'index.html#beranda'
     following_href = following['href'] if following else 'index.html#peta'
-    previous_label = '← Kembali: ' + previous['title'] if previous else '← Kembali ke beranda'
-    following_label = 'Lanjut: ' + following['title'] + ' →' if following else 'Kembali ke peta belajar →'
-    block = (START + '<nav class="reading-navigation" aria-label="Urutan bacaan">'
-             f'<a class="back-link" data-reading-prev href="{escape(previous_href, quote=True)}">'
+    previous_label = '← ' + previous['title'] if previous else '← Beranda Prekalkulus'
+    following_label = following['title'] + ' →' if following else 'Peta belajar →'
+    previous_caption, following_caption = 'SEBELUMNYA', 'SELANJUTNYA'
+    if utility:
+        previous_href, previous_label, previous_caption = 'index.html#peta', '← Peta belajar', 'KEMBALI'
+        following_caption = 'MULAI MEMBACA'
+    elif not previous:
+        previous_caption = 'KEMBALI'
+    if not following:
+        following_caption = 'KEMBALI'
+    block = (START + '<nav class="reading-navigation chapter-nav" aria-label="Urutan bacaan">'
+             f'<a data-reading-prev href="{escape(previous_href, quote=True)}"><small>{previous_caption}</small>'
              + escape(previous_label) + '</a>'
-             f'<a class="back-link" data-reading-next href="{escape(following_href, quote=True)}">'
+             f'<a data-reading-next href="{escape(following_href, quote=True)}"><small>{following_caption}</small>'
              + escape(following_label) + '</a></nav>' + END)
     generated = re.compile(re.escape(START) + r'[\s\S]*?' + re.escape(END))
     if START in source:
         if len(generated.findall(source)) != 1:
             raise ValueError(page + ': expected exactly one reading navigation block')
-        return generated.sub(lambda _: block, source)
+        source = generated.sub('', source)
+        # Put the final navigation after all reading content, including context links.
+        article = re.search(r'<article\b[\s\S]*?</article>', source)
+        if not article:
+            raise ValueError(page + ': missing reading article')
+        body = article.group()
+        body = ANCHOR.sub(lambda m: '' if 'back-link' in attrs(m.group()).get('class', '').split()
+                          and normalized(attrs(m.group()).get('href', ''), page) == 'index.html#peta'
+                          else m.group(), body)
+        body = re.sub(r'(?:<p>)?<a href="index.html#peta">(?:← )?Kembali ke peta belajar(?: →)?</a>(?:</p>)?(?=</article>)', '', body)
+        body = body.replace('</article>', block + '</article>')
+        return source[:article.start()] + body + source[article.end():]
+    if utility:
+        return source.replace('</article>', block + '</article>', 1)
     old = []
     for m in ANCHOR.finditer(source):
         a = attrs(m.group())
@@ -117,6 +138,23 @@ def render_bottom(source, page, previous, following):
         result += source[cursor:m.start()]
         cursor = m.end()
     return result + source[cursor:]
+
+
+def render_footer(source, page):
+    footer = re.search(r'<footer\b[\s\S]*?</footer>', source)
+    if not footer:
+        raise ValueError(page + ': missing footer')
+    resources = ''
+    if page == 'index.html' and 'class="site-footer"' not in footer.group():
+        links = [m.group() for m in ANCHOR.finditer(footer.group())
+                 if attrs(m.group()).get('href') in ('peta-buku.html', 'uji-coba.html')]
+        if links:
+            resources = '<nav class="site-resources" aria-label="Sumber pendamping">' + ''.join(links) + '</nav>'
+    replacement = ('<footer class="site-footer"><span>Tri Utomo · Institut Teknologi Sumatera</span>'
+                   '<span>Bacaan Prekalkulus · ITERA Bermatika</span>'
+                   '<a href="https://github.com/itera-bermatika/fondasi-matematika/issues" '
+                   'target="_blank" rel="noopener">Kirim koreksi ↗</a></footer>')
+    return source[:footer.start()] + resources + replacement + source[footer.end():]
 
 
 def render_layout(source, page):
@@ -158,10 +196,10 @@ def render_layout(source, page):
 def render(source, page, previous, following, utility=False):
     source = render_layout(source, page)
     source = render_header(source, page, following, utility)
-    if not utility:
-        source = render_bottom(source, page, previous, following)
+    source = render_bottom(source, page, previous, following, utility)
+    source = render_footer(source, page)
     source = re.sub(r'<link rel="stylesheet" href="navigation.css(?:\?[^"]*)?">', '', source)
-    css = '<link rel="stylesheet" href="navigation.css?v=20261023-layout">'
+    css = '<link rel="stylesheet" href="navigation.css?v=20261023-footer">'
     if css not in source:
         source = source.replace('</head>', css + '</head>')
     return source
